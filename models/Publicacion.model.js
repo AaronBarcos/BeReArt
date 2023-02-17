@@ -1,21 +1,22 @@
+const mongoose = require("mongoose");
 const { Schema, model } = require("mongoose");
 
 // TODO: Please make sure you edit the User model to whatever makes sense in this case
 const publicacionSchema = new Schema(
   {
-    foto: {
+    photo: {
       type: String,
       required: true,
     },
-    propietario: {
+    owner: {
       type: String,
       ref: "user"
     },
-    cuadro: {
+    picture: {
       type: String,
       required: true
     },
-    ubicacion: {
+    ubication: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "cuadro"
     },
