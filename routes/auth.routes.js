@@ -8,9 +8,11 @@ router.get("/signup", (req, res, next) => {
     res.render("auth/signup-form.hbs");
   });
 
+console.log("HOLAMUNDO")
 /* POST Recibir la info del formulario y crear el perfil de usuario */
 router.post("/signup", async (req, res, next) => {
     // VALIDACIONES DE BACK-END
+    //OIASDNHAOISDNASOIDNASODNBASOIDNASDSDAS
   
     // Todos los campos deben estar completos
     if (
