@@ -12,11 +12,14 @@
    <body>
 
       <a href="/">Inicio</a>
-      <a href="">Foto del día</a>
+      {{#if isUserActive}}
+      <a href="/logged/feed">Foto del día</a>
+      <a href="/logged/profile">Mi perfil</a>
+      <a href="/auth/logout">Cerrar sesión</a>
+      {{else}}
       <a href="/auth/signup">Crear un usuario</a>
       <a href="/auth/login">Iniciar sesión</a>
-      {{!-- <a href="">Cerrar sesión</a> --}}
-      {{!-- <a href="">Mi perfil</a> --}}
+      {{/if}}
 
       {{{body}}}
 
