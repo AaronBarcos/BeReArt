@@ -1,6 +1,7 @@
 const express = require("express");
 const User = require("../models/User.model.js");
 const router = express.Router();
+const bcrypt = require('bcrypt');
 
 /* GET Rendererizar formulario de registro */
 router.get("/signup", (req, res, next) => {
@@ -81,9 +82,9 @@ router.get("/login", (req, res, next) => {
 // POST Recibir la info del formulario y permitir al usuario acceder (creamos sesión activa)
 router.post("/login", async (req, res, next) => {
     // VALIDACIONES DE BACK-END
-
+  console.log(req.body)
     // Todos los campos deben estar completos
-    if (req.body.email === "" || req.body.password === "") {
+    if (req.body.username === "" || req.body.password === "") {
         res.status(401).render("auth/login-form.hbs", {
           errorMessage: "Todos los campos deben estar completos!",
           valueUsername: req.body.username,
@@ -93,10 +94,10 @@ router.post("/login", async (req, res, next) => {
 
       try {
         // Si el usuario está creado en la DB
-        const foundUser = await User.findOne({ email: req.body.username });
+        const foundUser = await User.findOne({ username: req.body.username });
         if (foundUser === null) {
           res.render("auth/login-form.hbs", {
-            errorMessage: "Usuario no registrado con ese correo electrónico",
+            errorMessage: "Usuario no registrado con ese nombre",
             valueUsername: req.body.username,
           });
           return;
@@ -124,7 +125,7 @@ router.post("/login", async (req, res, next) => {
     
           // 3. SI VERIFICA OK REDIRECCIONAR AL USER A SU PERFIL (por ejemplo)
           // Si todo está correcto entonces: permitirle al usuario acceder a su perfil
-          //res.redirect("/profile");
+          res.redirect("/");
         //});
       } catch (error) {
         next(error);
