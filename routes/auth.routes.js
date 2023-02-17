@@ -8,11 +8,9 @@ router.get("/signup", (req, res, next) => {
     res.render("auth/signup-form.hbs");
   });
 
-console.log("HOLAMUNDO")
 /* POST Recibir la info del formulario y crear el perfil de usuario */
 router.post("/signup", async (req, res, next) => {
     // VALIDACIONES DE BACK-END
-    //OIASDNHAOISDNASOIDNASODNBASOIDNASDSDAS
   
     // Todos los campos deben estar completos
     if (
@@ -119,16 +117,11 @@ router.post("/login", async (req, res, next) => {
         }
     
         // Activar una sesión
-        // Contiuamente verificar si el usuario tiene una sesión
-        // req.session.activeUser = foundUser; // Esto crea la sesión en la DB y envía la cookie al usuario
+        req.session.activeUser = foundUser; // Esto crea la sesión en la DB y envía la cookie al usuario
         // Automaticamente, en TODAS las rutas vamos a tener acceso a req.session.activeUser => siempre nos dará el user que hace la llamada
-        // req.session.save(() => {
-          // El sistema espera a que se haya creado la sesión en DB y luego hace...
-    
-          // 3. SI VERIFICA OK REDIRECCIONAR AL USER A SU PERFIL (por ejemplo)
-          // Si todo está correcto entonces: permitirle al usuario acceder a su perfil
-          res.redirect("/");
-        //});
+        req.session.save(() => {
+          res.redirect("/logged/feed");
+        });
       } catch (error) {
         next(error);
       }
