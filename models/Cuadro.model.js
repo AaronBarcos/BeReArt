@@ -1,38 +1,35 @@
 const { Schema, model } = require("mongoose");
 
 // TODO: Please make sure you edit the User model to whatever makes sense in this case
-const userSchema = new Schema(
+const cuadroSchema = new Schema(
   {
-    username: {
+    titulo: {
       type: String,
-      trim: true,
       required: true,
       unique: true
     },
-    email: {
+    descripción: {
       type: String,
       required: true,
       unique: true,
-      lowercase: true,
-      trim: true
     },
-    password: {
+    autor: {
       type: String,
       required: true
     },
-    ubicacion: {
+    año: {
       type: String,
       required: true
     },
-    photos: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "publicacion"
+    image: {
+        type: String,
     }
-    ]
+      
      
   },
+    
 );
 
-const User = model("User", userSchema);
+const Cuadro = model("User", userSchema);
 
-module.exports = User;
+module.exports = Cuadro;
