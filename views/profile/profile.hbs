@@ -2,16 +2,16 @@
 
 <div>
     
-    <h5>Nombre: {{profileDetails.name}}</h5>
-    <h5>Email: {{profileDetails.email}}</h5>
-    <h5>Ubicación: {{profileDetails.ubication}}</h5>
-    <h5>Fotos: {{profileDetails.photos}}</h5>
+    <h5>Nombre: {{foundUser.username}}</h5>
+    <h5>Email: {{foundUser.email}}</h5>
+    <h5>Ubicación: {{foundUser.ubication}}</h5>
+    <h5>Últimas fotos: {{foundUser.photos}}</h5>
 
-    <form action="" method="post">
-        <button>Editar</button>
+    <form action="/logged/{{foundUser._id}}/edit" method="post">
+        <a href="/logged/profile/edit"><button>Editar</button></a>
     </form>
     <br>
-    <form action="" method="post">
+    <form action="/logged/deleteUser/{{foundUser._id}}" method="post">
         <button>Eliminar usuario</button>
     </form>
 </div>
