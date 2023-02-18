@@ -2,23 +2,20 @@
 
 <h4>Perfil de: {{updateUser.username}}</h4>
 <div>
-    <form action="/logged/{{updateUser._id}}/edit" method="post">
-        <label for="username">Nombre de usuario</label>
-        <input type="text" name="username" value="{{updateUser.username}}">
-        <br>
+  <form action="/logged/{{updateUser._id}}/edit" method="post">
+    <label for="username">Nombre de usuario</label>
+    <input type="text" name="username" value="{{updateUser.username}}" />
+    <br />
 
-        <label for="email">Email</label>
-        <input type="text" name="email" value="{{updateUser.email}}">
-        <br>
+    <label for="email">Email</label>
+    <input type="text" name="email" value="{{updateUser.email}}" />
+    <br />
 
-        <label for="ubication">Ubicación:</label>
-        <input type="text" name="ubication" value="{{updateUser.ubication}}">
-        <br>
-        
-        <form action="/logged/{{updateUser._id}}" method=" post">
-            <a href="/logged/profile">Guardar cambios</a>
-        </form>
+    <label for="ubication">Ubicación:</label>
+    <input type="text" name="ubication" value="{{updateUser.ubication}}" />
+    <br />
 
+    <button>Guardar cambios</button>
 
-    </form>
+  </form>
 </div>

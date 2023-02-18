@@ -39,7 +39,7 @@ router.post("/:profileId/edit", isLoggedIn, async (req, res, next) => {
       email: req.body.email,
       ubication: req.body.ubication,
     });
-    res.redirect("/logged/profile/edit");
+    res.redirect("/logged/profile");
   } catch (error) {
     next(error);
   }
