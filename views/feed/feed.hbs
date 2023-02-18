@@ -20,11 +20,22 @@
 
 <h4>¡Ahora sube tu foto imitando este cuadro!</h4>
 
-<div>
-    <h6>{{username}}</h6>
-    <img src="" alt="replica-user">
 
-    <form action="" method="post">
-        <button>Borrar</button>
-    </form>
-</div>
+    <button>Crear publicación</button>
+
+<script>
+
+    button = document.querySelector("button")
+    const crearPost = () => {
+        let idPost = 'post';
+        let post = document.createElement('div');
+        post.innerHTML = hola
+        post.setAttribute('id', idPost);
+        document.body.appendChild(post);
+    }
+    
+
+button.addEventListener("click", crearPost);
+
+
+</script>
