@@ -1,4 +1,5 @@
 <div>
+    <h2>REGÍSTRATE PARA VER LAS OBRAS DE ARTE DE TUS AMIGOS</h2>
     <h3>Formulario de registro</h3>
     <form action="/auth/signup" method="post">
         <label for="username">Username:</label>
@@ -18,4 +19,6 @@
     {{#if this.errorMessage}}
         <h4>{{this.errorMessage}}</h4>
     {{/if}}
+    <h3>¿Ya tienes cuenta?</h3>
+    <a href="/auth/login"><h4>Inicia sesión</h4></a>
 </div>
