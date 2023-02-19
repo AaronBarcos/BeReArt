@@ -4,7 +4,7 @@
     <img src="" alt="cuadro-dia">
     <h5>Detalles del cuadro:</h5>
     <h6>Título:
-        <p>{{this.title}}</p>
+        <p>{{foundUser.username}}</p>
     </h6>
     <h6>Autor:
         <p>{{this.author}}</p>
@@ -24,17 +24,17 @@
     <button>Crear publicación</button>
 
 <script>
-
     button = document.querySelector("button")
     const crearPost = () => {
         let idPost = 'post';
         let post = document.createElement('div');
-        post.innerHTML = hola
+        post.innerHTML = "{{foundUser.username}}"
         post.setAttribute('id', idPost);
         document.body.appendChild(post);
+        console.log(post)
+        localStorage.setItem("post", JSON.stringify(post))
     }
     
-
 button.addEventListener("click", crearPost);
 
 

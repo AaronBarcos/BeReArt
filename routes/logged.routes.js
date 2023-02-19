@@ -4,8 +4,13 @@ const User = require("../models/User.model.js");
 const { isLoggedIn } = require("../middlewares/auth-middlewares.js");
 const { networkInterfaces } = require("os");
 
-router.get("/feed", isLoggedIn, (req, res, next) => {
-  res.render("feed/feed.hbs");
+router.get("/feed", isLoggedIn, async (req, res, next) => {
+  try {
+    //const foundUser = await User.findById(req.session.activeUser._id);
+    res.render("feed/feed.hbs"/*, { foundUser: foundUser }*/);
+  } catch (error) {
+    next(error);
+  }
 });
 
 router.get("/profile", isLoggedIn, async (req, res, next) => {
