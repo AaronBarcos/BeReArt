@@ -1,41 +1,60 @@
+<style>
+form {display: none;}
+</style>
+
 <h2>Cuadro del día</h2>
 
 <div>
-    <img src="" alt="cuadro-dia">
-    <h5>Detalles del cuadro:</h5>
-    <h6>Título:
+    <img src="" alt="cuadro-del-dia">
+    <h4>Detalles del cuadro:</h4>
+    <h5>Título:
         <p>{{foundUser.username}}</p>
-    </h6>
-    <h6>Autor:
+    </h5>
+    <h5>Autor:
         <p>{{this.author}}</p>
-    </h6>
-    <h6>Año:
+    </h5>
+    <h5>Año:
         <p>{{this.year}}</p>
-    </h6>
-    <h6>Descripción:
+    </h5>
+    <h5>Descripción:
         <p>{{this.description}}</p>
-    </h6>
+    </h5>
     
 </div>
 
 <h4>¡Ahora sube tu foto imitando este cuadro!</h4>
 
+    
+    
+<button id="button-create">Crear publicación</button>
+    
+    <form action="/logged/feed" method="post" id="form-post">
+    <label for="photo">Tú foto:</label>
+    <input type="file" name="photo">
+    <label for="comentario">Comentario:</label>
+    <input type="text" name="comentario">
+    <button id="button-post">Publicar</button>
+    </form>
 
-    <button>Crear publicación</button>
+
+
 
 <script>
-    button = document.querySelector("button")
-    const crearPost = () => {
-        let idPost = 'post';
-        let post = document.createElement('div');
-        post.innerHTML = "{{foundUser.username}}"
-        post.setAttribute('id', idPost);
-        document.body.appendChild(post);
-        console.log(post)
-        localStorage.setItem("post", JSON.stringify(post))
+    let buttonCreate = document.querySelector("#button-create")
+    let form = document.querySelector("#form-post")
+    let buttonPost = document.querySelector("#button-post")
+    const desplegarFormPost = () => {
+        buttonCreate.style.display = "none"
+        form.style.display= "block"
     }
+    const displayPost = () => {
+        buttonCreate.style.display = "none"
+    }
+
     
-button.addEventListener("click", crearPost);
+buttonCreate.addEventListener("click", desplegarFormPost);
+buttonPost.addEventListener("click", displayPost)
+
 
 
 </script>

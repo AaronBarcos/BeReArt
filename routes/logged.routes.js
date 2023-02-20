@@ -2,14 +2,23 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/User.model.js");
 const { isLoggedIn } = require("../middlewares/auth-middlewares.js");
+const { isCreatingPost } = require("../middlewares/auth-middlewares.js");
 const { networkInterfaces } = require("os");
+const Publicacion = require("../models/Publicacion.model.js");
 
-router.get("/feed", isLoggedIn, async (req, res, next) => {
+
+// Ruta para renderizar el feed
+router.get("/feed", isLoggedIn, (req, res, next) => {
+      res.render("feed/feed.hbs");
+});
+
+// Ruta para recibir la data del form
+router.post("/feed", isLoggedIn, async (req, res, next) => {
   try {
-    //const foundUser = await User.findById(req.session.activeUser._id);
-    res.render("feed/feed.hbs"/*, { foundUser: foundUser }*/);
+    Publicacion.create
+    res.render("feed/feed.hbs")
   } catch (error) {
-    next(error);
+    next(error)
   }
 });
 
