@@ -26,7 +26,16 @@ const updateLocals = (req, res, next) => {
   
   }
 
+const isCreatingPost = (req, res, next) => {
+  if (isCreating === false || isCreating === undefined) {
+    let errorMessage = "Debes terminar la publicación!" 
+  } else {
+    next();
+  }
+} 
+
 module.exports = {
     isLoggedIn: isLoggedIn,
-    updateLocals: updateLocals
+    updateLocals: updateLocals,
+    isCreatingPost: isCreatingPost
 }

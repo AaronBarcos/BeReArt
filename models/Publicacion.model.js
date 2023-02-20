@@ -6,25 +6,33 @@ const publicacionSchema = new Schema(
   {
     photo: {
       type: String,
-      required: true,
+      //required: true,
     },
+
     owner: {
-      type: String,
-      ref: "user"
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "username",
     },
+
+    username: String,
+
+    comment: {
+      type: String,
+    },
+    
     picture: {
       type: String,
-      required: true
+      // required: true
     },
-    ubication: {
+
+    cuadroDia: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "cuadro"
+      ref: "cuadro",
     },
-     
   },
   {
-    // this second object adds extra properties: `createdAt` and `updatedAt`    
-    timestamps: true
+    // this second object adds extra properties: `createdAt` and `updatedAt`
+    timestamps: true,
   }
 );
 

@@ -2,10 +2,43 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/User.model.js");
 const { isLoggedIn } = require("../middlewares/auth-middlewares.js");
+const { isCreatingPost } = require("../middlewares/auth-middlewares.js");
 const { networkInterfaces } = require("os");
+const Publicacion = require("../models/Publicacion.model.js");
+const { trusted } = require("mongoose");
 
+
+// Ruta para renderizar el feed
 router.get("/feed", isLoggedIn, (req, res, next) => {
-  res.render("feed/feed.hbs");
+      res.render("feed/feed.hbs");
+});
+
+// Ruta para recibir la data del form
+router.post("/feed", isLoggedIn, async (req, res, next) => {
+  try {
+    const foundUser = await User.findById(req.session.activeUser._id);
+    const publicaciones = await Publicacion.find()
+    const publicacionByName = await Publicacion.find().select("username")
+
+    if (publicacionByName.filter(cadaPublicacion => cadaPublicacion.username === foundUser.username).length > 0) {
+      console.log("Ya has creado una publicación")
+    } else {
+      const publicacionCreada = Publicacion.create({
+        photo: req.body.photo,
+        owner: foundUser._id,
+        username: foundUser.username,
+        comment: req.body.comment,
+        cuadroDia: req.body.ubication,
+      })
+    }
+
+    
+    res.render("feed/feed.hbs", {
+      publicaciones: publicaciones
+    } )
+  } catch (error) {
+    next(error)
+  }
 });
 
 router.get("/profile", isLoggedIn, async (req, res, next) => {
