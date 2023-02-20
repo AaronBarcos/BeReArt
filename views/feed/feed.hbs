@@ -1,70 +1,68 @@
 <style>
-form {display: none;}
+  form {display: none;}
 </style>
 
 <h2>Cuadro del día</h2>
 
 <div>
-    <img src="" alt="cuadro-del-dia">
-    <h4>Detalles del cuadro:</h4>
-    <h5>Título:
-        <p>{{foundUser.username}}</p>
-    </h5>
-    <h5>Autor:
-        <p>{{this.author}}</p>
-    </h5>
-    <h5>Año:
-        <p>{{this.year}}</p>
-    </h5>
-    <h5>Descripción:
-        <p>{{this.description}}</p>
-    </h5>
-    
+    {{#each cuadroDelDia}}
+  <img src="" alt="cuadro-del-dia" />
+  <h4>Detalles del cuadro:</h4>
+  <h5>Título:
+    {{this.title}}
+  </h5>
+  <h5>Autor:
+    {{this.author}}
+  </h5>
+  <h5>Año:
+    <p>{{this.year}}</p>
+  </h5>
+  <h5>Descripción:
+    <p>{{this.description}}</p>
+  </h5>
+{{/each}}
 </div>
 
 <h4>¡Ahora sube tu foto imitando este cuadro!</h4>
 
-
-
 <button id="button-create">Crear publicación</button>
 
-    
-    <form action="/logged/feed" method="post" id="form-post">
-    <label for="photo">Tú foto:</label>
-    <input type="file" name="photo">
-    <br>
-    <label for="comment">Comentario:</label>
-    <input type="text" name="comment">
-    <br>
-    <button id="button-post">Publicar</button>
-    </form>
+<form
+  action="/logged/feed"
+  method="post"
+  enctype="multipart/form-data"
+  id="form-post"
+>
+  <label for="photo">Tú foto:</label>
+  <input type="file" name="photo" />
+  <br />
+  <label for="comment">Comentario:</label>
+  <input type="text" name="comment" />
+  <br />
+  <button id="button-post">Publicar</button>
+</form>
 
 <div id="post">
-    {{#each publicaciones}}
+  {{#each publicaciones}}
     <h3>Publicado por: {{this.username}}</h3>
-    <img src="" alt="foto-de-{{this.username}}" />
+    <img
+      src="{{this.photo}}"
+      alt="foto-de-{{this.username}}"
+      width="300px"
+      alt="cover"
+    />
     <p>Comentario:{{this.comment}}</p>
     <p>Hora: {{this.createdAt}}</p>
-    {{/each}}
+  {{/each}}
 </div>
 
-
 <script>
-    let buttonCreate = document.querySelector("#button-create")
-    let form = document.querySelector("#form-post")
-    let buttonPost = document.querySelector("#button-post")
-    const desplegarFormPost = () => {
-        buttonCreate.style.display = "none"
-        form.style.display= "block"
-    }
-    const displayPost = () => {
-        buttonCreate.style.display = "none"
-    }
-
-    
-buttonCreate.addEventListener("click", desplegarFormPost);
-buttonPost.addEventListener("click", displayPost)
-
-
+  let buttonCreate = document.querySelector("#button-create") let form =
+  document.querySelector("#form-post") let buttonPost =
+  document.querySelector("#button-post") const desplegarFormPost = () => {
+  buttonCreate.style.display = "none" form.style.display= "block" } const
+  displayPost = () => { buttonCreate.style.display = "none" }
+  buttonCreate.addEventListener("click", desplegarFormPost);
+  buttonPost.addEventListener("click", displayPost)
 
 </script>

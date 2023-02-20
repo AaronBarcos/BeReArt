@@ -28,9 +28,13 @@ const cuadroSchema = new Schema(
       
      
   },
+  {
+    // this second object adds extra properties: `createdAt` and `updatedAt`
+    timestamps: true,
+  }
     
 );
 
-const Cuadro = model("User", userSchema);
+const Cuadro = model("Cuadro", cuadroSchema);
 
 module.exports = Cuadro;

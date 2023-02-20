@@ -1,0 +1,16 @@
+<h2>Perfil de Administrador</h2>
+
+<div>
+
+  <h5>Nombre: {{foundAdmin.username}}</h5>
+  <h5>Email: {{foundAdmin.email}}</h5>
+  <h5>Ubicación: {{foundAdmin.ubication}}</h5>
+  <h5>Últimas fotos: {{foundAdmin.photos}}</h5>
+
+  <a href="/logged/profileAdmin/edit"><button>Editar</button></a>
+
+  <br />
+  <form action="/logged/deleteAdmin/{{foundAdmin._id}}" method="post">
+    <button>Eliminar perfil de administrador</button>
+  </form>
+</div>
