@@ -24,19 +24,29 @@ form {display: none;}
 
 <h4>¡Ahora sube tu foto imitando este cuadro!</h4>
 
-    
-    
+
+
 <button id="button-create">Crear publicación</button>
+
     
     <form action="/logged/feed" method="post" id="form-post">
     <label for="photo">Tú foto:</label>
     <input type="file" name="photo">
-    <label for="comentario">Comentario:</label>
-    <input type="text" name="comentario">
+    <br>
+    <label for="comment">Comentario:</label>
+    <input type="text" name="comment">
+    <br>
     <button id="button-post">Publicar</button>
     </form>
 
-
+<div id="post">
+    {{#each publicaciones}}
+    <h3>Publicado por: {{this.username}}</h3>
+    <img src="" alt="foto-de-{{this.username}}" />
+    <p>Comentario:{{this.comment}}</p>
+    <p>Hora: {{this.createdAt}}</p>
+    {{/each}}
+</div>
 
 
 <script>
