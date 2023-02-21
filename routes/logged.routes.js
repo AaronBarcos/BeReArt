@@ -252,7 +252,7 @@ router.post("/deleteAdmin/:id", isLoggedIn, isAdmin, async (req, res, next) => {
 
 //RUTA para que el usuario puede eliminar su publicación
 router.post("/cuadroDelDia/:id", isLoggedIn, async (req, res, next) => {
-  console.log(req.params)
+  
   try {
    await Publicacion.deleteOne({owner: req.params.id})
     res.redirect("/logged/cuadroDelDia")
