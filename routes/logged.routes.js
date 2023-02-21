@@ -13,14 +13,15 @@ const PublicacionCopia = require("../models/PublicacionCopia.model.js");
 const uploader = require("../middlewares/cloudinary-user.js");
 const uploaderAdmin = require("../middlewares/cloudinary-admin.js");
 
-let errorMessage = ""
 
 // Ruta para renderizar el feed
 router.get("/cuadroDelDia", isLoggedIn, async (req, res, next) => {
   try {
     const publicaciones = await Publicacion.find();
     const cuadroDelDia = await Cuadro.findOne().sort({ createdAt: -1 });
+    const foundUserId = await User.findById(req.session.activeUser._id)
     const fechasPublicaciones = await Publicacion.find().select("createdAt")
+    console.log(foundUserId._id)
     
     // Esto se puede meter en utils
     const tiempoTranscurrido = Date.now();
@@ -39,7 +40,7 @@ router.get("/cuadroDelDia", isLoggedIn, async (req, res, next) => {
     res.render("feed/feed.hbs", {
       publicaciones: publicaciones,
       cuadroDelDia: cuadroDelDia,
-      errorMessage: errorMessage
+      foundUserId: foundUserId
     });
   } catch (error) {
     next(error);
@@ -52,6 +53,11 @@ router.post(
   isLoggedIn,
   uploader.single("photo"),
   async (req, res, next) => {
+
+    const publicaciones = await Publicacion.find();
+    const cuadroDelDia = await Cuadro.findOne().sort({ createdAt: -1 });
+    const foundUserId = await User.findById(req.session.activeUser._id)
+
     try {
       const foundUser = await User.findById(req.session.activeUser._id);
       const publicacionByName = await Publicacion.find().select("username");
@@ -68,8 +74,12 @@ router.post(
           (cadaPublicacion) => cadaPublicacion.createdAt.toLocaleDateString() === fechaDeHoy
         ).length > 0
       ) {
-        errorMessage = "Ya has creado la publicación de hoy"
-        console.log(errorMessage)
+        res.status(400).render("feed/feed.hbs",{
+          errorMessage:"Ya has creado la publicación de hoy",
+          publicaciones: publicaciones,
+          cuadroDelDia: cuadroDelDia,
+          foundUserId: foundUserId
+        })
       } else {
         const publicacionCreada = PublicacionCopia.create({
           photo: req.file.path,
@@ -78,6 +88,7 @@ router.post(
           comment: req.body.comment,
           cuadroDia: req.body.ubication,
         });
+        
       }
 
       if (
@@ -85,7 +96,12 @@ router.post(
           (cadaPublicacion) => cadaPublicacion.username === foundUser.username
         ).length > 0
       ) {
-        errorMessage = "Ya has creado la publicación de hoy"
+        res.status(400).render("feed/feed.hbs",{
+          errorMessage:"Ya has creado la publicación de hoy",
+          publicaciones: publicaciones,
+          cuadroDelDia: cuadroDelDia,
+          foundUserId: foundUserId
+        })
       } else {
         const publicacionCreada = Publicacion.create({
           photo: req.file.path,
@@ -94,8 +110,10 @@ router.post(
           comment: req.body.comment,
           cuadroDia: req.body.ubication,
         });
+        res.redirect("/logged/cuadroDelDia");
       }
-      res.redirect("/logged/cuadroDelDia");
+      
+      
     } catch (error) {
       next(error);
     }
@@ -219,7 +237,7 @@ router.post("/:profileId/edit", isLoggedIn, isAdmin, async (req, res, next) => {
   }
 });
 
-// Ruta para eliminar usuario, su sesión activa y su user de DB
+// Ruta para eliminar admin, su sesión activa y su user de DB
 router.post("/deleteAdmin/:id", isLoggedIn, isAdmin, async (req, res, next) => {
   console.log(req.params.id);
   try {
@@ -227,6 +245,17 @@ router.post("/deleteAdmin/:id", isLoggedIn, isAdmin, async (req, res, next) => {
     req.session.destroy(() => {
       res.redirect("/");
     });
+  } catch (error) {
+    next(error);
+  }
+});
+
+//RUTA para que el usuario puede eliminar su publicación
+router.post("/cuadroDelDia/:deleteById", isLoggedIn, async (req, res, next) => {
+  
+  try {
+   await Publicacion.deleteOne(req.params._id);
+    res.redirect("/logged/cuadroDelDia")
   } catch (error) {
     next(error);
   }
