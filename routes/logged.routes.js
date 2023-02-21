@@ -254,7 +254,7 @@ router.post("/deleteAdmin/:id", isLoggedIn, isAdmin, async (req, res, next) => {
 router.post("/cuadroDelDia/:deleteById", isLoggedIn, async (req, res, next) => {
   
   try {
-   await Publicacion.deleteOne(req.params._id);
+   await Publicacion.findByIdAndDelete(req.params._id)
     res.redirect("/logged/cuadroDelDia")
   } catch (error) {
     next(error);
