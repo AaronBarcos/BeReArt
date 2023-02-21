@@ -19,7 +19,7 @@ const publicacionSchema = new Schema(
     comment: {
       type: String,
     },
-    
+
     picture: {
       type: String,
       // required: true
@@ -29,6 +29,8 @@ const publicacionSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "cuadro",
     },
+
+    hora: String,
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`

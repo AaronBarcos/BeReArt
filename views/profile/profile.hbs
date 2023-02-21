@@ -9,7 +9,13 @@
   <h5>Nombre: {{foundUser.username}}</h5>
   <h5>Email: {{foundUser.email}}</h5>
   <h5>Ubicación: {{foundUser.ubication}}</h5>
-  <h5>Últimas fotos: {{foundUser.photos}}</h5>
+  <h5>Últimas fotos: </h5>
+
+    {{#each publicacionesDeUser}}
+      <img src="{{this.photo}}" alt="foto-del-día" width="100px">
+      <p>{{this.fechaHora}}</p>
+    {{/each}}
+  
 
   <a href="/logged/profile/edit"><button>Editar</button></a>
 

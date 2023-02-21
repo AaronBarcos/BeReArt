@@ -13,21 +13,21 @@ const PublicacionCopia = require("../models/PublicacionCopia.model.js");
 const uploader = require("../middlewares/cloudinary-user.js");
 const uploaderAdmin = require("../middlewares/cloudinary-admin.js");
 
-
 // Ruta para renderizar el feed
 router.get("/cuadroDelDia", isLoggedIn, async (req, res, next) => {
   try {
     const publicaciones = await Publicacion.find();
     const cuadroDelDia = await Cuadro.findOne().sort({ createdAt: -1 });
-    const foundUserId = await User.findById(req.session.activeUser._id)
-    const fechasPublicaciones = await Publicacion.find().select("createdAt")
+    const foundUserId = await User.findById(req.session.activeUser._id);
+    const fechasPublicaciones = await Publicacion.find().select("createdAt");
     let hayPublicaciones = true;
-    
+
     // Esto se puede meter en utils
     const tiempoTranscurrido = Date.now();
     const hoy = new Date(tiempoTranscurrido);
-    const fechaDeHoy = hoy.toLocaleDateString()
-    const fechaDeAyer = 20/2/2023
+    const fechaDeHoy = hoy.toLocaleDateString();
+    const horaActual = hoy.toLocaleTimeString();
+    console.log(horaActual);
 
     if (publicaciones.length !== 0) {
       hayPublicaciones = false;
@@ -36,19 +36,18 @@ router.get("/cuadroDelDia", isLoggedIn, async (req, res, next) => {
     }
 
     // Para borrar de la DB las publicaciones del día
-    fechasPublicaciones.forEach(cadaPublicacion => {
+    fechasPublicaciones.forEach((cadaPublicacion) => {
       if (cadaPublicacion.createdAt.toLocaleDateString() !== fechaDeHoy) {
-        cadaPublicacion.delete()
-        res.redirect("/logged/cuadroDelDia")
+        cadaPublicacion.delete();
+        res.redirect("/logged/cuadroDelDia");
       }
     });
-    
-    
+
     res.render("feed/feed.hbs", {
       publicaciones: publicaciones,
       cuadroDelDia: cuadroDelDia,
       foundUserId: foundUserId,
-      hayPublicaciones
+      hayPublicaciones,
     });
   } catch (error) {
     next(error);
@@ -61,42 +60,45 @@ router.post(
   isLoggedIn,
   uploader.single("photo"),
   async (req, res, next) => {
-
     const publicaciones = await Publicacion.find();
     const cuadroDelDia = await Cuadro.findOne().sort({ createdAt: -1 });
-    const foundUserId = await User.findById(req.session.activeUser._id)
+    const foundUserId = await User.findById(req.session.activeUser._id);
 
     try {
       const foundUser = await User.findById(req.session.activeUser._id);
       const publicacionByName = await Publicacion.find().select("username");
-      const publicacionByDate = await PublicacionCopia.find().select("createdAt");
-      
-      
+      const publicacionByDate = await PublicacionCopia.find().select(
+        "createdAt"
+      );
+
       // Esto se puede meter en utils
       const tiempoTranscurrido = Date.now();
       const hoy = new Date(tiempoTranscurrido);
-      const fechaDeHoy = hoy.toLocaleDateString()
+      const fechaDeHoy = hoy.toLocaleDateString();
 
       if (
         publicacionByDate.filter(
-          (cadaPublicacion) => cadaPublicacion.createdAt.toLocaleDateString() === fechaDeHoy
+          (cadaPublicacion) =>
+            cadaPublicacion.createdAt.toLocaleDateString() === fechaDeHoy
         ).length > 0
       ) {
-        res.status(400).render("feed/feed.hbs",{
-          errorMessage:"Ya has creado la publicación de hoy",
+        res.status(400).render("feed/feed.hbs", {
+          errorMessage: "Ya has creado la publicación de hoy",
           publicaciones: publicaciones,
           cuadroDelDia: cuadroDelDia,
-          foundUserId: foundUserId
-        })
+          foundUserId: foundUserId,
+        });
       } else {
-        const publicacionCreada = PublicacionCopia.create({
+        const horaActual = hoy.toLocaleTimeString().slice(0, 5);
+        const fechaHora = `${fechaDeHoy} ${horaActual}`;
+        await PublicacionCopia.create({
           photo: req.file.path,
           owner: foundUser._id,
           username: foundUser.username,
           comment: req.body.comment,
           cuadroDia: req.body.ubication,
+          fechaHora: fechaHora,
         });
-        
       }
 
       if (
@@ -104,24 +106,24 @@ router.post(
           (cadaPublicacion) => cadaPublicacion.username === foundUser.username
         ).length > 0
       ) {
-        res.status(400).render("feed/feed.hbs",{
-          errorMessage:"Ya has creado la publicación de hoy",
+        res.status(400).render("feed/feed.hbs", {
+          errorMessage: "Ya has creado la publicación de hoy",
           publicaciones: publicaciones,
           cuadroDelDia: cuadroDelDia,
-          foundUserId: foundUserId
-        })
+          foundUserId: foundUserId,
+        });
       } else {
-        const publicacionCreada = Publicacion.create({
+        const horaActual = hoy.toLocaleTimeString().slice(0, 5);
+        await Publicacion.create({
           photo: req.file.path,
           owner: foundUser._id,
           username: foundUser.username,
           comment: req.body.comment,
           cuadroDia: req.body.ubication,
+          hora: horaActual,
         });
         res.redirect("/logged/cuadroDelDia");
       }
-      
-      
     } catch (error) {
       next(error);
     }
@@ -135,9 +137,17 @@ router.get("/profile", isLoggedIn, async (req, res, next) => {
     if (req.session.activeUser.role === "admin") {
       isAdmin = true;
     }
+
     const foundUser = await User.findById(req.session.activeUser._id);
-    res.render("profile/profile.hbs", { foundUser: foundUser, isAdmin });
-    // console.log(foundUser)
+    const publicacionesDeUser = await PublicacionCopia.find({
+      owner: foundUser._id,
+    });
+
+    res.render("profile/profile.hbs", {
+      foundUser: foundUser,
+      publicacionesDeUser: publicacionesDeUser,
+      isAdmin,
+    });
   } catch (error) {
     next(error);
   }
@@ -181,7 +191,6 @@ router.post("/deleteUser/:id", isLoggedIn, async (req, res, next) => {
   }
 });
 
-
 // Ruta para ir a la creación del cuadro del día
 router.get("/profileAdmin/create", isLoggedIn, isAdmin, (req, res, next) => {
   res.render("admin/upload-cuadro.hbs");
@@ -210,7 +219,6 @@ router.post(
   }
 );
 
-
 //POST=> Ruta para editar el valor de campo de admin
 router.post("/:profileId/edit", isLoggedIn, isAdmin, async (req, res, next) => {
   try {
@@ -226,13 +234,11 @@ router.post("/:profileId/edit", isLoggedIn, isAdmin, async (req, res, next) => {
   }
 });
 
-
 //RUTA para que el usuario puede eliminar su publicación
 router.post("/cuadroDelDia/:id", isLoggedIn, async (req, res, next) => {
-  
   try {
-   await Publicacion.deleteOne({owner: req.params.id})
-    res.redirect("/logged/cuadroDelDia")
+    await Publicacion.deleteOne({ owner: req.params.id });
+    res.redirect("/logged/cuadroDelDia");
   } catch (error) {
     next(error);
   }
