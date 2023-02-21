@@ -18,16 +18,16 @@ const isAdmin = (req, res, next) => {
 
 const updateLocals = (req, res, next) => {
 
-    if (req.session.activeUser === undefined) {
-      res.locals.isUserActive = false
+  if (req.session.activeUser === undefined) {
+    res.locals.isUserActive = false
+  } else {
+    res.locals.isUserActive = true
+    if (req.session.activeUser.role === "admin") {
+      res.locals.isUserAdminType = true
     } else {
-      res.locals.isUserActive = true
-    }
-    
-    
-    // if (req.session.activeUser.role === "admin") {
-    //   res.locals.isUserAdminType = true
-    // }
+      res.locals.isUserAdminType = false
+    } 
+  } 
     
     next()
   }

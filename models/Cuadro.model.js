@@ -7,7 +7,7 @@ const cuadroSchema = new Schema(
     title: {
       type: String,
       required: true,
-      unique: true
+      unique: true,
     },
     description: {
       type: String,
@@ -16,23 +16,24 @@ const cuadroSchema = new Schema(
     },
     author: {
       type: String,
-      required: true
+      required: true,
     },
     year: {
       type: String,
-      required: true
+      required: true,
     },
     image: {
-        type: String,
-    }
-      
-     
+      type: String,
+    },
+    admin: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "user",
+    },
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
     timestamps: true,
   }
-    
 );
 
 const Cuadro = model("Cuadro", cuadroSchema);

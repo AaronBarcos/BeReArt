@@ -119,7 +119,7 @@ router.post("/login", async (req, res, next) => {
     req.session.activeUser = foundUser; // Esto crea la sesión en la DB y envía la cookie al usuario
     // Automaticamente, en TODAS las rutas vamos a tener acceso a req.session.activeUser => siempre nos dará el user que hace la llamada
     req.session.save(() => {
-      res.redirect("/logged/feed");
+      res.redirect("/logged/cuadroDelDia");
     });
   } catch (error) {
     next(error);

@@ -1,26 +1,26 @@
 <style>
-  form {display: none;}
+  #form-post {display: none;}
 </style>
 
 <h2>Cuadro del día</h2>
 
 <div>
-    {{#each cuadroDelDia}}
-  <img src="" alt="cuadro-del-dia" />
+  
+  <img src="{{cuadroDelDia.image}}" alt="cuadro-del-dia" alt="cover" width="400px"/>
   <h4>Detalles del cuadro:</h4>
   <h5>Título:
-    {{this.title}}
+    {{cuadroDelDia.title}}
   </h5>
   <h5>Autor:
-    {{this.author}}
+    {{cuadroDelDia.author}}
   </h5>
   <h5>Año:
-    <p>{{this.year}}</p>
+    <p>{{cuadroDelDia.year}}</p>
   </h5>
   <h5>Descripción:
-    <p>{{this.description}}</p>
+    <p>{{cuadroDelDia.description}}</p>
   </h5>
-{{/each}}
+
 </div>
 
 <h4>¡Ahora sube tu foto imitando este cuadro!</h4>
@@ -28,7 +28,7 @@
 <button id="button-create">Crear publicación</button>
 
 <form
-  action="/logged/feed"
+  action="/logged/cuadroDelDia"
   method="post"
   enctype="multipart/form-data"
   id="form-post"
@@ -57,11 +57,14 @@
 </div>
 
 <script>
-  let buttonCreate = document.querySelector("#button-create") let form =
-  document.querySelector("#form-post") let buttonPost =
-  document.querySelector("#button-post") const desplegarFormPost = () => {
-  buttonCreate.style.display = "none" form.style.display= "block" } const
-  displayPost = () => { buttonCreate.style.display = "none" }
+  let buttonCreate = document.querySelector("#button-create")
+  let form = document.querySelector("#form-post")
+  let buttonPost = document.querySelector("#button-post")
+  const desplegarFormPost = () => {
+    buttonCreate.style.display = "none"
+    form.style.display= "block" }
+  const displayPost = () => {
+      buttonCreate.style.display = "none" }
   buttonCreate.addEventListener("click", desplegarFormPost);
   buttonPost.addEventListener("click", displayPost)
 

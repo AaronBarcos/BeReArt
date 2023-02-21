@@ -13,7 +13,7 @@
 
       <a href="/">Inicio</a>
       {{#if isUserActive}}
-      <a href="/logged/feed">Cuadro del día</a>
+      <a href="/logged/cuadroDelDia">Cuadro del día</a>
       <a href="/logged/profile">Mi perfil</a>
       <a href="/auth/logout">Cerrar sesión</a>
       {{else}}
@@ -21,7 +21,9 @@
       <a href="/auth/login">Iniciar sesión</a>
       {{/if}}
       
+      {{#if isUserAdminType}}
       <a href="/logged/profileAdmin/create">Crear cuadro del día</a>
+      {{/if}}
       
 
       {{{body}}}
