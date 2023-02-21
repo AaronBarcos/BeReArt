@@ -1,12 +1,14 @@
 <style>
-  #form-post {display: none;}
+  #form-post {
+    display: none;
+  }
 </style>
 
 <h2>Cuadro del día</h2>
 
 <div>
-  
-  <img src="{{cuadroDelDia.image}}" alt="cuadro-del-dia" alt="cover" width="400px"/>
+
+  <img src="{{cuadroDelDia.image}}" alt="cuadro-del-dia" alt="cover" width="400px" />
   <h4>Detalles del cuadro:</h4>
   <h5>Título:
     {{cuadroDelDia.title}}
@@ -27,12 +29,7 @@
 
 <button id="button-create">Crear publicación</button>
 
-<form
-  action="/logged/cuadroDelDia"
-  method="post"
-  enctype="multipart/form-data"
-  id="form-post"
->
+<form action="/logged/cuadroDelDia" method="post" enctype="multipart/form-data" id="form-post">
   <label for="photo">Tú foto:</label>
   <input type="file" name="photo" />
   <br />
@@ -42,17 +39,16 @@
   <button id="button-post">Publicar</button>
 </form>
 
+{{#if errorMessage}}
+  <p>{{this.errorMessage}}</p>
+{{/if}}
+
 <div id="post">
   {{#each publicaciones}}
-    <h3>Publicado por: {{this.username}}</h3>
-    <img
-      src="{{this.photo}}"
-      alt="foto-de-{{this.username}}"
-      width="300px"
-      alt="cover"
-    />
-    <p>Comentario:{{this.comment}}</p>
-    <p>Hora: {{this.createdAt}}</p>
+  <h3>Publicado por: {{this.username}}</h3>
+  <img src="{{this.photo}}" alt="foto-de-{{this.username}}" width="300px" alt="cover" />
+  <p>Comentario:{{this.comment}}</p>
+  <p>Hora: {{this.createdAt}}</p>
   {{/each}}
 </div>
 
@@ -62,9 +58,11 @@
   let buttonPost = document.querySelector("#button-post")
   const desplegarFormPost = () => {
     buttonCreate.style.display = "none"
-    form.style.display= "block" }
+    form.style.display = "block"
+  }
   const displayPost = () => {
-      buttonCreate.style.display = "none" }
+    buttonCreate.style.display = "none"
+  }
   buttonCreate.addEventListener("click", desplegarFormPost);
   buttonPost.addEventListener("click", displayPost)
 

@@ -8,19 +8,38 @@ const { networkInterfaces } = require("os");
 const Publicacion = require("../models/Publicacion.model.js");
 const { trusted } = require("mongoose");
 const Cuadro = require("../models/Cuadro.model.js");
+const PublicacionCopia = require("../models/PublicacionCopia.model.js");
 
 const uploader = require("../middlewares/cloudinary-user.js");
 const uploaderAdmin = require("../middlewares/cloudinary-admin.js");
+
+let errorMessage = ""
 
 // Ruta para renderizar el feed
 router.get("/cuadroDelDia", isLoggedIn, async (req, res, next) => {
   try {
     const publicaciones = await Publicacion.find();
     const cuadroDelDia = await Cuadro.findOne().sort({ createdAt: -1 });
-    console.log(cuadroDelDia);
+    const fechasPublicaciones = await Publicacion.find().select("createdAt")
+    
+    // Esto se puede meter en utils
+    const tiempoTranscurrido = Date.now();
+    const hoy = new Date(tiempoTranscurrido);
+    const fechaDeHoy = hoy.toLocaleDateString()
+    const fechaDeAyer = 20/2/2023
+
+    fechasPublicaciones.forEach(cadaPublicacion => {
+      if (cadaPublicacion.createdAt.toLocaleDateString() !== fechaDeHoy) {
+        cadaPublicacion.delete()
+        res.redirect("/logged/cuadroDelDia")
+      }
+    });
+    
+    
     res.render("feed/feed.hbs", {
       publicaciones: publicaciones,
       cuadroDelDia: cuadroDelDia,
+      errorMessage: errorMessage
     });
   } catch (error) {
     next(error);
@@ -36,13 +55,37 @@ router.post(
     try {
       const foundUser = await User.findById(req.session.activeUser._id);
       const publicacionByName = await Publicacion.find().select("username");
+      const publicacionByDate = await PublicacionCopia.find().select("createdAt");
+      
+      
+      // Esto se puede meter en utils
+      const tiempoTranscurrido = Date.now();
+      const hoy = new Date(tiempoTranscurrido);
+      const fechaDeHoy = hoy.toLocaleDateString()
+
+      if (
+        publicacionByDate.filter(
+          (cadaPublicacion) => cadaPublicacion.createdAt.toLocaleDateString() === fechaDeHoy
+        ).length > 0
+      ) {
+        errorMessage = "Ya has creado la publicación de hoy"
+        console.log(errorMessage)
+      } else {
+        const publicacionCreada = PublicacionCopia.create({
+          photo: req.file.path,
+          owner: foundUser._id,
+          username: foundUser.username,
+          comment: req.body.comment,
+          cuadroDia: req.body.ubication,
+        });
+      }
 
       if (
         publicacionByName.filter(
           (cadaPublicacion) => cadaPublicacion.username === foundUser.username
         ).length > 0
       ) {
-        console.log("Ya has creado una publicación");
+        errorMessage = "Ya has creado la publicación de hoy"
       } else {
         const publicacionCreada = Publicacion.create({
           photo: req.file.path,
