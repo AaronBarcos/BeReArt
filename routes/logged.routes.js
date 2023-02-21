@@ -21,7 +21,7 @@ router.get("/cuadroDelDia", isLoggedIn, async (req, res, next) => {
     const cuadroDelDia = await Cuadro.findOne().sort({ createdAt: -1 });
     const foundUserId = await User.findById(req.session.activeUser._id)
     const fechasPublicaciones = await Publicacion.find().select("createdAt")
-    console.log(foundUserId._id)
+    let hayPublicaciones = true;
     
     // Esto se puede meter en utils
     const tiempoTranscurrido = Date.now();
@@ -29,6 +29,13 @@ router.get("/cuadroDelDia", isLoggedIn, async (req, res, next) => {
     const fechaDeHoy = hoy.toLocaleDateString()
     const fechaDeAyer = 20/2/2023
 
+    if (publicaciones.length !== 0) {
+      hayPublicaciones = false;
+    } else {
+      hayPublicaciones = true;
+    }
+
+    // Para borrar de la DB las publicaciones del día
     fechasPublicaciones.forEach(cadaPublicacion => {
       if (cadaPublicacion.createdAt.toLocaleDateString() !== fechaDeHoy) {
         cadaPublicacion.delete()
@@ -40,7 +47,8 @@ router.get("/cuadroDelDia", isLoggedIn, async (req, res, next) => {
     res.render("feed/feed.hbs", {
       publicaciones: publicaciones,
       cuadroDelDia: cuadroDelDia,
-      foundUserId: foundUserId
+      foundUserId: foundUserId,
+      hayPublicaciones
     });
   } catch (error) {
     next(error);
@@ -123,8 +131,12 @@ router.post(
 // Ruta para ir al perfil del user
 router.get("/profile", isLoggedIn, async (req, res, next) => {
   try {
+    let isAdmin = false;
+    if (req.session.activeUser.role === "admin") {
+      isAdmin = true;
+    }
     const foundUser = await User.findById(req.session.activeUser._id);
-    res.render("profile/profile.hbs", { foundUser: foundUser });
+    res.render("profile/profile.hbs", { foundUser: foundUser, isAdmin });
     // console.log(foundUser)
   } catch (error) {
     next(error);
@@ -169,15 +181,6 @@ router.post("/deleteUser/:id", isLoggedIn, async (req, res, next) => {
   }
 });
 
-// Ruta para ir al perfil del admin
-router.get("/profileAdmin", isLoggedIn, isAdmin, async (req, res, next) => {
-  try {
-    const foundAdmin = await User.findById(req.session.activeUser._id);
-    res.render("admin/admin.hbs", { foundAdmin: foundAdmin });
-  } catch (error) {
-    next(error);
-  }
-});
 
 // Ruta para ir a la creación del cuadro del día
 router.get("/profileAdmin/create", isLoggedIn, isAdmin, (req, res, next) => {
@@ -207,20 +210,6 @@ router.post(
   }
 );
 
-//Ruta para renderizar página de edición de user
-router.get(
-  "/profileAdmin/edit",
-  isLoggedIn,
-  isAdmin,
-  async (req, res, next) => {
-    try {
-      const updateAdmin = await User.findById(req.session.activeUser._id);
-      res.render("admin/edit-admin.hbs", { updateAdmin: updateAdmin });
-    } catch (error) {
-      next(error);
-    }
-  }
-);
 
 //POST=> Ruta para editar el valor de campo de admin
 router.post("/:profileId/edit", isLoggedIn, isAdmin, async (req, res, next) => {
@@ -237,18 +226,6 @@ router.post("/:profileId/edit", isLoggedIn, isAdmin, async (req, res, next) => {
   }
 });
 
-// Ruta para eliminar admin, su sesión activa y su user de DB
-router.post("/deleteAdmin/:id", isLoggedIn, isAdmin, async (req, res, next) => {
-  console.log(req.params.id);
-  try {
-    await User.findByIdAndDelete(req.params.id);
-    req.session.destroy(() => {
-      res.redirect("/");
-    });
-  } catch (error) {
-    next(error);
-  }
-});
 
 //RUTA para que el usuario puede eliminar su publicación
 router.post("/cuadroDelDia/:id", isLoggedIn, async (req, res, next) => {

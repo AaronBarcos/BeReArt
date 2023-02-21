@@ -30,7 +30,13 @@
 
 <h4>¡Ahora sube tu foto imitando este cuadro!</h4>
 
+{{#if hayPublicaciones}}
 <button id="button-create">Crear publicación</button>
+{{else}}
+<form action="/logged/cuadroDelDia/{{foundUserId._id}}" method="post" id="button-delete">
+    <button>Borrar publicación</button>
+  </form>
+{{/if}}
 
 <form action="/logged/cuadroDelDia" method="post" enctype="multipart/form-data" id="form-post">
   <label for="photo">Tú foto:</label>
@@ -56,9 +62,6 @@
   <p>Comentario:{{this.comment}}</p>
   <p>Hora: {{this.createdAt}}</p>
   {{/each}}
-  <form action="/logged/cuadroDelDia/{{foundUserId._id}}" method="post" id="button-delete">
-    <button>Borrar publicación</button>
-  </form>
 </div>
 
 <script>
