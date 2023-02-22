@@ -11,6 +11,8 @@
 
    <body>
 
+      <nav>
+      <img src="" alt="logo-BeReArt">
       <a href="/">Inicio</a>
       {{#if isUserActive}}
       <a href="/logged/cuadroDelDia">Cuadro del día</a>
@@ -24,6 +26,7 @@
       {{#if isUserAdminType}}
       <a href="/logged/profileAdmin/create">Crear cuadro del día</a>
       {{/if}}
+      </nav>
       
 
       {{{body}}}
