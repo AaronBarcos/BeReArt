@@ -124,6 +124,7 @@ router.post(
         });
         res.redirect("/logged/cuadroDelDia");
       }
+      res.redirect("/logged/cuadroDelDia");
     } catch (error) {
       next(error);
     }
