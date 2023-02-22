@@ -15,20 +15,21 @@
 <body class="p-3 mb-2 bg-black text-white">
 
    <nav>
-      <img src="" alt="logo-BeReArt">
+      <img src="images/bereart-logo-blanco.png" alt="logo-BeReArt" width="50px">
       <a href="/">Inicio</a>
       {{#if isUserActive}}
       <a href="/logged/cuadroDelDia">Cuadro del día</a>
       <a href="/logged/profile">Mi perfil</a>
+      {{#if isUserAdminType}}
+      <a href="/logged/profileAdmin/create">Crear cuadro del día</a>
+      {{/if}}
       <a href="/auth/logout">Cerrar sesión</a>
       {{else}}
       <a href="/auth/signup">Crear un usuario</a>
       <a href="/auth/login">Iniciar sesión</a>
       {{/if}}
 
-      {{#if isUserAdminType}}
-      <a href="/logged/profileAdmin/create">Crear cuadro del día</a>
-      {{/if}}
+      
    </nav>
 
    <div id="body-centrado">

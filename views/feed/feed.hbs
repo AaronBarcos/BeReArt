@@ -81,7 +81,11 @@
 
 {{#each publicaciones}}
 <div class="card text-bg-dark mb-3" style="max-width: 18rem;">
-  <div class="card-header">Publicado por: {{this.username}} <img src="" alt="foto-user"></div>
+  <div class="card-header"> <p>
+  Publicado por: {{this.username}}
+  </p>
+  <img src="{{foundUser.profilePhoto}}" alt="foto-user" width="25px"/>
+  </div>
   <div class="card-body">
     <img src="{{this.photo}}" class="card-img-top" alt="foto-de-{{this.username}}" width="300px" alt="cover" />
     <p class="card-text">Comentario:{{this.comment}}</p>
