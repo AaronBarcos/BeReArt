@@ -20,6 +20,9 @@ router.get("/cuadroDelDia", isLoggedIn, async (req, res, next) => {
     const cuadroDelDia = await Cuadro.findOne().sort({ createdAt: -1 });
     const foundUserId = await User.findById(req.session.activeUser._id);
     const fechasPublicaciones = await Publicacion.find().select("createdAt");
+    const foundUser = await User.findById(req.session.activeUser._id);
+    const publicacion = await Publicacion.find({ owner: foundUser.id })
+    const publicacionByName = await Publicacion.find().select("username");
     let hayPublicaciones = true;
 
     // Esto se puede meter en utils
@@ -27,13 +30,17 @@ router.get("/cuadroDelDia", isLoggedIn, async (req, res, next) => {
     const hoy = new Date(tiempoTranscurrido);
     const fechaDeHoy = hoy.toLocaleDateString();
     const horaActual = hoy.toLocaleTimeString();
-    console.log(horaActual);
+    // console.log(foundUserId);
 
-    if (publicaciones.length !== 0) {
-      hayPublicaciones = false;
-    } else {
-      hayPublicaciones = true;
-    }
+    if (
+        publicacionByName.filter(
+          (cadaPublicacion) => cadaPublicacion.username === foundUser.username
+        ).length > 0
+      ) {
+        hayPublicaciones = false;
+      } else {
+        hayPublicaciones = true;
+      }
 
     // Para borrar de la DB las publicaciones del día
     fechasPublicaciones.forEach((cadaPublicacion) => {
@@ -47,6 +54,8 @@ router.get("/cuadroDelDia", isLoggedIn, async (req, res, next) => {
       publicaciones: publicaciones,
       cuadroDelDia: cuadroDelDia,
       foundUserId: foundUserId,
+      publicacion: publicacion,
+      foundUser: foundUser,
       hayPublicaciones,
     });
   } catch (error) {
@@ -114,7 +123,7 @@ router.post(
         });
       } else {
         const horaActual = hoy.toLocaleTimeString().slice(0, 5);
-        await Publicacion.create({
+        const publicacionDelDia= await Publicacion.create({
           photo: req.file.path,
           owner: foundUser._id,
           username: foundUser.username,
@@ -130,6 +139,25 @@ router.post(
     }
   }
 );
+
+//RUTA para que el usuario puede eliminar su publicación
+router.post("/cuadroDelDiaDelete/:id", isLoggedIn, async (req, res, next) => {
+  try {
+    const foundUser = await User.findById(req.session.activeUser._id);
+    const publicacionCopiaByName = await Publicacion.find().select("username");
+    if (
+      publicacionCopiaByName.filter(
+        (cadaPublicacion) => cadaPublicacion.username === foundUser.username
+      ).length > 0
+    ) {
+      await PublicacionCopia.deleteOne({ owner: req.params.id })
+    }
+    await Publicacion.deleteOne({ owner: req.params.id });
+    res.redirect("/logged/cuadroDelDia");
+  } catch (error) {
+    next(error);
+  }
+});
 
 // Ruta para ir al perfil del user
 router.get("/profile", isLoggedIn, async (req, res, next) => {
@@ -235,14 +263,27 @@ router.post("/:profileId/edit", isLoggedIn, isAdmin, async (req, res, next) => {
   }
 });
 
-//RUTA para que el usuario puede eliminar su publicación
-router.post("/cuadroDelDia/:id", isLoggedIn, async (req, res, next) => {
+//POST=> Ruta para editar la publicación del día
+router.post("/cuadroDelDiaEdit/:id", isLoggedIn, uploader.single("photo"), async (req, res, next) => {
   try {
-    await Publicacion.deleteOne({ owner: req.params.id });
+    const foundUser = await User.findById(req.session.activeUser._id);
+    const publicacionCopiaByName = await Publicacion.find().select("username");
+    const tiempoTranscurrido = Date.now();
+    const hoy = new Date(tiempoTranscurrido);
+    const fechaDeHoy = hoy.toLocaleDateString();
+    const horaActual = hoy.toLocaleTimeString().slice(0, 5)
+    console.log(foundUser)
+
+    await Publicacion.findOneAndUpdate( { owner: req.params.id } , {
+      photo: req.file.path,
+      comment: req.body.comment,
+      hora: horaActual
+    });
     res.redirect("/logged/cuadroDelDia");
   } catch (error) {
     next(error);
   }
 });
+
 
 module.exports = router;

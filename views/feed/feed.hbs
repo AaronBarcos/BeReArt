@@ -2,6 +2,11 @@
   #form-post {
     display: none;
   }
+
+  #edit-form {
+    display: none;
+  }
+
   #button-delete {
     display: block;
   }
@@ -9,22 +14,25 @@
 
 <h2>Cuadro del día</h2>
 
-<div>
+<div class="card text-bg-dark border-light mb-3" style="max-width: 18rem;">
 
-  <img src="{{cuadroDelDia.image}}" alt="cuadro-del-dia" alt="cover" width="400px" />
-  <h4>Detalles del cuadro:</h4>
-  <h5>Título:
-    {{cuadroDelDia.title}}
-  </h5>
-  <h5>Autor:
-    {{cuadroDelDia.author}}
-  </h5>
-  <h5>Año:
+  <img src="{{cuadroDelDia.image}}" class="card-img-top" alt="cuadro-del-dia" alt="cover" width="400px" />
+  <div class="card-body">
+
+    <h5 class="card-title">Título:
+      {{cuadroDelDia.title}}
+    </h5>
+    <p class="card-text">Autor:
+      {{cuadroDelDia.author}}
+    </p>
+    <p class="card-text">Año:
     <p>{{cuadroDelDia.year}}</p>
-  </h5>
-  <h5>Descripción:
+    </p>
+    <p class="card-text">Descripción:
     <p>{{cuadroDelDia.description}}</p>
-  </h5>
+    </p>
+
+  </div>
 
 </div>
 
@@ -33,12 +41,16 @@
 {{#if hayPublicaciones}}
 <button id="button-create">Crear publicación</button>
 {{else}}
-<form action="/logged/cuadroDelDia/{{foundUserId._id}}" method="post" id="button-delete">
-    <button>Borrar publicación</button>
-  </form>
+<button id="button-edit">Editar tu publicación</button>
+<form action="/logged/cuadroDelDiaDelete/{{foundUserId._id}}" method="post" id="button-delete">
+  <button>Borrar publicación</button>
+</form>
 {{/if}}
 
-<form action="/logged/cuadroDelDia" method="post" enctype="multipart/form-data" id="form-post">
+
+
+
+<form id="form-post" action="/logged/cuadroDelDia" method="post" enctype="multipart/form-data" >
   <label for="photo">Tú foto:</label>
   <input type="file" name="photo" />
   <br />
@@ -49,36 +61,62 @@
   <button id="button-post">Publicar</button>
 </form>
 
+<form id="edit-form" action="/logged/cuadroDelDiaEdit/{{foundUser._id}}" method="post" enctype="multipart/form-data">
+  <label for="photo">Tú foto:</label>
+  <input type="file" name="photo"/>
+  <br />
+  <label for="comment">Comentario:</label>
+  <input type="text" name="comment" value="{{publicacion.[0].comment}}" />
+  <br /> 
+  <button id="button-post">Guardar cambios</button>
+</form>
+
 
 
 {{#if errorMessage}}
-  <p>{{this.errorMessage}}</p>
+<p>{{this.errorMessage}}</p>
 {{/if}}
 
-<div id="post">
-  {{#each publicaciones}}
-  <h3>Publicado por: {{this.username}}</h3>
-  <img src="{{this.photo}}" alt="foto-de-{{this.username}}" width="300px" alt="cover" />
-  <p>Comentario:{{this.comment}}</p>
-  <p>Hora: {{this.hora}}</p>
-  {{/each}}
+
+{{#each publicaciones}}
+<div class="card text-bg-dark mb-3" style="max-width: 18rem;">
+  <div class="card-header">Publicado por: {{this.username}}</div>
+  <div class="card-body">
+    <img src="{{this.photo}}" class="card-img-top" alt="foto-de-{{this.username}}" width="300px" alt="cover" />
+    <p class="card-text">Comentario:{{this.comment}}</p>
+    <p class="card-text">Hora: {{this.hora}}</p>
+  </div>
 </div>
+{{/each}}
 
 <script>
   const buttonCreate = document.querySelector("#button-create")
   const form = document.querySelector("#form-post")
   const buttonPost = document.querySelector("#button-post")
   const buttonDelete = document.querySelector("#button-delete")
+  const buttonEdit = document.querySelector("#button-edit")
+  const editForm = document.querySelector("#edit-form")
+
   const desplegarFormPost = () => {
     buttonCreate.style.display = "none"
     form.style.display = "block"
   }
+  const desplegarEditPost = () => {
+    buttonEdit.style.display = "none"
+    editForm.style.display = "block"
+    
+    console.log("hola")
+  }
   const displayPost = () => {
     buttonCreate.style.display = "none"
     buttonDelete.style.display = "block"
-  }
-  
+    buttonUpdate.style.display = "block"
+  };
+
+  if (buttonCreate) {
   buttonCreate.addEventListener("click", desplegarFormPost);
-  buttonPost.addEventListener("click", displayPost)
+  }
+  buttonEdit.addEventListener("click", desplegarEditPost);
+  buttonPost.addEventListener("click", displayPost);
 
 </script>
