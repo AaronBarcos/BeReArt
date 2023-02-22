@@ -20,13 +20,11 @@
   <div class="card-body">
 
     <h5 class="card-title">Título:
-      {{cuadroDelDia.title}}
+      "{{cuadroDelDia.title}}"
     </h5>
-    <p class="card-text">Autor:
-      {{cuadroDelDia.author}}
+    <p class="card-text">Autor:{{cuadroDelDia.author}}
     </p>
-    <p class="card-text">Año:
-    <p>{{cuadroDelDia.year}}</p>
+    <p class="card-text">Año: {{cuadroDelDia.year}}
     </p>
     <p class="card-text">Descripción:
     <p>{{cuadroDelDia.description}}</p>
@@ -41,16 +39,19 @@
 {{#if hayPublicaciones}}
 <button id="button-create">Crear publicación</button>
 {{else}}
-<button id="button-edit">Editar tu publicación</button>
-<form action="/logged/cuadroDelDiaDelete/{{foundUserId._id}}" method="post" id="button-delete">
-  <button>Borrar publicación</button>
-</form>
+<div>
+  <img src="{{publicacion.[0].photo}}" alt="foto-subida-por-ti" width="100px">
+  <button id="button-edit">Editar tu publicación</button>
+  <form action="/logged/cuadroDelDiaDelete/{{foundUserId._id}}" method="post" id="button-delete">
+    <button>Borrar publicación</button>
+  </form>
+</div>
 {{/if}}
 
 
 
 
-<form id="form-post" action="/logged/cuadroDelDia" method="post" enctype="multipart/form-data" >
+<form id="form-post" action="/logged/cuadroDelDia" method="post" enctype="multipart/form-data">
   <label for="photo">Tú foto:</label>
   <input type="file" name="photo" />
   <br />
@@ -63,11 +64,11 @@
 
 <form id="edit-form" action="/logged/cuadroDelDiaEdit/{{foundUser._id}}" method="post" enctype="multipart/form-data">
   <label for="photo">Tú foto:</label>
-  <input type="file" name="photo"/>
+  <input type="file" name="photo" />
   <br />
   <label for="comment">Comentario:</label>
   <input type="text" name="comment" value="{{publicacion.[0].comment}}" />
-  <br /> 
+  <br />
   <button id="button-post">Guardar cambios</button>
 </form>
 
@@ -80,12 +81,21 @@
 
 {{#each publicaciones}}
 <div class="card text-bg-dark mb-3" style="max-width: 18rem;">
-  <div class="card-header">Publicado por: {{this.username}}</div>
+  <div class="card-header">Publicado por: {{this.username}} <img src="" alt="foto-user"></div>
   <div class="card-body">
     <img src="{{this.photo}}" class="card-img-top" alt="foto-de-{{this.username}}" width="300px" alt="cover" />
     <p class="card-text">Comentario:{{this.comment}}</p>
     <p class="card-text">Hora: {{this.hora}}</p>
+    {{#each this.comentarios}}
+    <p class="card-text">{{this}}</p>
+    {{/each}}
   </div>
+  <form action="/logged/comentario/{{this._id}}" method="post">
+    <label for="comentario"><label>
+        <input type="text" name="comentario" placeholder="Añade un comentario...">
+        <br>
+        <button>Enviar</button>
+  </form>
 </div>
 {{/each}}
 
@@ -104,7 +114,7 @@
   const desplegarEditPost = () => {
     buttonEdit.style.display = "none"
     editForm.style.display = "block"
-    
+
     console.log("hola")
   }
   const displayPost = () => {
@@ -114,7 +124,7 @@
   };
 
   if (buttonCreate) {
-  buttonCreate.addEventListener("click", desplegarFormPost);
+    buttonCreate.addEventListener("click", desplegarFormPost);
   }
   buttonEdit.addEventListener("click", desplegarEditPost);
   buttonPost.addEventListener("click", displayPost);

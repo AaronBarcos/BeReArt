@@ -12,6 +12,7 @@ const PublicacionCopia = require("../models/PublicacionCopia.model.js");
 
 const uploader = require("../middlewares/cloudinary-user.js");
 const uploaderAdmin = require("../middlewares/cloudinary-admin.js");
+const uploaderFotoUser = require("../middlewares/cloudinary-fotouser.js")
 
 // Ruta para renderizar el feed
 router.get("/cuadroDelDia", isLoggedIn, async (req, res, next) => {
@@ -284,6 +285,37 @@ router.post("/cuadroDelDiaEdit/:id", isLoggedIn, uploader.single("photo"), async
     next(error);
   }
 });
+
+// POST => Ruta para recibir imagen de perfil
+
+router.post("/profile/photo", isLoggedIn, uploaderFotoUser.single("profilePhoto"), async (req, res, next) => {
+  try {
+    console.log(req.session.activeUser._id)
+    await User.findByIdAndUpdate(req.session.activeUser._id, {
+      profilePhoto: req.file.path
+    })
+    res.redirect("/logged/profile");
+  } catch (error) {
+    next(error);
+  }
+})
+
+// POST=> Ruta para recibir comentarios
+
+router.post("/comentario/:idPublicacion", isLoggedIn, async (req, res, next) => {
+  try {
+    const {idPublicacion} = req.params
+    const foundUser = await User.findById(req.session.activeUser._id);
+    const esaPublicacion = await Publicacion.findByIdAndUpdate(idPublicacion, 
+      {$push:
+        {comentarios: `${foundUser.username}: ${req.body.comentario}`}
+      }
+      )
+    res.redirect("/logged/cuadroDelDia");
+  } catch (error) {
+    next(error)
+  }
+})
 
 
 module.exports = router;

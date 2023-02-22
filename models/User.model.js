@@ -35,6 +35,9 @@ const userSchema = new Schema({
     enum: ["user", "admin"],
     default: "user",
   },
+  profilePhoto: {
+    type: String,
+  },
 });
 
 const User = model("User", userSchema);

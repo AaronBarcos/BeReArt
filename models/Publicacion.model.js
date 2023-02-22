@@ -31,6 +31,12 @@ const publicacionSchema = new Schema(
     },
 
     hora: String,
+
+    comentarios: [
+      {
+        type: String
+      }
+    ]
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
