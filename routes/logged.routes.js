@@ -14,6 +14,8 @@ const uploader = require("../middlewares/cloudinary-user.js");
 const uploaderAdmin = require("../middlewares/cloudinary-admin.js");
 const uploaderFotoUser = require("../middlewares/cloudinary-fotouser.js")
 
+
+
 // Ruta para renderizar el feed
 router.get("/cuadroDelDia", isLoggedIn, async (req, res, next) => {
   try {
@@ -87,9 +89,7 @@ router.post(
     try {
       const foundUser = await User.findById(req.session.activeUser._id);
       const publicacionByName = await Publicacion.find().select("username");
-      const publicacionByDate = await PublicacionCopia.find().select(
-        "createdAt"
-      );
+      const publicacionesCopia = await PublicacionCopia.find()
 
       // Esto se puede meter en utils
       const tiempoTranscurrido = Date.now();
@@ -97,9 +97,10 @@ router.post(
       const fechaDeHoy = hoy.toLocaleDateString();
 
       if (
-        publicacionByDate.filter(
+        publicacionesCopia.filter(
           (cadaPublicacion) =>
-            cadaPublicacion.createdAt.toLocaleDateString() === fechaDeHoy
+            cadaPublicacion.createdAt.toLocaleDateString() === fechaDeHoy &&
+            cadaPublicacion.username === foundUser.username
         ).length > 0
       ) {
         res.status(400).render("feed/feed.hbs", {
@@ -133,7 +134,7 @@ router.post(
           foundUserId: foundUserId,
         });
       } else {
-        const horaActual = hoy.toLocaleTimeString().slice(0, 5);
+        const horaActual = hoy.toLocaleTimeString().slice(0, 4);
         const publicacionDelDia= await Publicacion.create({
           photo: req.file.path,
           owner: foundUser._id,
@@ -182,12 +183,13 @@ router.get("/profile", isLoggedIn, async (req, res, next) => {
     }
 
     const foundUser = await User.findById(req.session.activeUser._id);
-    console.log(foundUser)
-    console.log("hola")
     
     const publicacionesDeUser = await PublicacionCopia.find({
-      owner: foundUser._id,
+      owner: foundUser.id
     });
+
+    console.log(publicacionesDeUser)
+
 
     res.render("profile/profile.hbs", {
       foundUser: foundUser,
@@ -212,6 +214,10 @@ router.get("/profile/edit", isLoggedIn, async (req, res, next) => {
 //POST=> Ruta para editar el valor de campo de user
 router.post("/:profileId/edit", isLoggedIn, async (req, res, next) => {
   try {
+    const foundUser = await User.findById(req.session.activeUser._id)
+    await Publicacion.findOneAndUpdate({username: foundUser.username}, {
+      username: req.body.username
+    })
     const { profileId } = req.params;
     await User.findByIdAndUpdate(profileId, {
       username: req.body.username,

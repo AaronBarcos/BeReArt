@@ -15,7 +15,7 @@
 
 <div style="margin-top: 50px;">
 
-<h2 class="border border-white text-center rounded">Cuadro del día</h2>
+  <h2 class="border border-white text-center rounded">Cuadro del día</h2>
 
   <div class="card text-bg-dark border-light mb-3" style="max-width: 18rem;">
 
@@ -49,61 +49,65 @@
 
 <div id="tu-publicacion">
   <div class="card text-bg-dark mb-3" style="max-width: 18rem;">
-  <div class="card-header"> 
-  <h5 class="text-center">
-    <img class="photo-profile-user" src="{{foundUser.profilePhoto}}" width="25px"/>
-    Hoy {{tuPublicacion.hora}}
-  </h5>
-  </div>
-  <div class="card-body">
-    <img src="{{tuPublicacion.photo}}" class="card-img-top" alt="foto-de-{{tuPublicacion.username}}" width="300px" alt="cover" />
-    <h5 class="card-text text-center title-users">{{tuPublicacion.comment}}</h5>
-    {{#each tuPublicacion.comentarios}}
-    <p class="card-text coments">{{this}}</p>
-    {{/each}}
-  </div>
-  <form action="/logged/comentario/{{tuPublicacion._id}}" method="post">
-    <div class="mb-3 text-center">
-      <label for="comentario" class="form-label"><label>
-          <input type="text" name="comentario" placeholder="Añade un comentario..." class="form-control">
-          <br>
-          <button class="btn btn-primary">Enviar</button>
+    <div class="card-header">
+      <h5 class="text-center">
+        <img class="photo-profile-user" src="{{foundUser.profilePhoto}}" width="25px" />
+        Hoy {{tuPublicacion.hora}}
+      </h5>
     </div>
-  </form>
-</div>
-<div class="editar-borrar">
-  <button id="button-edit" class="btn btn-dark">Editar tu publicación</button>
-  <form action="/logged/cuadroDelDiaDelete/{{foundUserId._id}}" method="post" id="button-delete">
-    <button class="btn btn-danger">Borrar publicación</button>
-  </form>
-</div>
+    <div class="card-body">
+      <img src="{{tuPublicacion.photo}}" class="card-img-top" alt="foto-de-{{tuPublicacion.username}}" width="300px"
+        alt="cover" />
+      <h5 class="card-text text-center title-users">{{tuPublicacion.comment}}</h5>
+      {{#each tuPublicacion.comentarios}}
+      <p class="card-text coments">{{this}}</p>
+      {{/each}}
+    </div>
+    <form action="/logged/comentario/{{tuPublicacion._id}}" method="post">
+      <div class="mb-3 text-center">
+        <label for="comentario" class="form-label"><label>
+            <input type="text" name="comentario" placeholder="Añade un comentario..." class="form-control">
+            <br>
+            <button class="btn btn-primary">Enviar</button>
+      </div>
+    </form>
+  </div>
+  <div class="editar-borrar">
+    <button id="button-edit" class="btn btn-dark">Editar tu publicación</button>
+    <form action="/logged/cuadroDelDiaDelete/{{foundUserId._id}}" method="post" id="button-delete">
+      <button class="btn btn-danger">Borrar publicación</button>
+    </form>
+  </div>
 </div>
 {{/if}}
 
 
 <form id="form-post" action="/logged/cuadroDelDia" method="post" enctype="multipart/form-data">
-<div class="mb-3 title-users">
-  <label for="photo" class="form-label">Tú foto:</label>
-  <input type="file" name="photo" class="form-control"/>
-  <br />
-  <label for="comment" class="form-label">Comentario:</label>
-  <input type="text" name="comment" class="form-control"/>
-  <br />
-  <p>¡Recuerda que solo puedes subir una publicación al día!</p>
-  <button id="button-post" class="text-center btn btn-success">Publicar</button>
-</div>
+  <div class="mb-3 title-users">
+    <label for="photo" class="form-label">Tú foto:</label>
+    <input type="file" name="photo" class="form-control" />
+    <br />
+    <label for="comment" class="form-label">Comentario:</label>
+    <input type="text" name="comment" class="form-control" />
+    <br />
+    <p>¡Recuerda que solo puedes subir una publicación al día!</p>
+    <button id="button-post" class="text-center btn btn-success">Publicar</button>
+  </div>
 </form>
 
 <form id="edit-form" action="/logged/cuadroDelDiaEdit/{{foundUser._id}}" method="post" enctype="multipart/form-data">
   <div class="mb-3">
-  <label for="photo" class="form-label">Tú foto:</label>
-  <input type="file" name="photo" class="form-control"/>
-  <br />
-  <label for="comment" class="form-label">Comentario:</label>
-  <input type="text" name="comment" class="form-control"/>
-  <br />
-  <button id="button-post" class="text-center btn btn-success">Guardar</button>
+    <label for="photo" class="form-label">Tú foto:</label>
+    <input type="file" name="photo" class="form-control" />
+    <br />
+    <label for="comment" class="form-label">Comentario:</label>
+    <input type="text" name="comment" class="form-control" />
+    <br />
+    <div class="alert alert-warning" role="alert">
+  ¡Sube una nueva foto con un comentario!
 </div>
+    <button id="button-post" class="text-center btn btn-success">Guardar</button>
+  </div>
 </form>
 
 
@@ -116,32 +120,33 @@
 
 <div id="publicaciones">
 
-{{#each publicaciones}}
-<div class="card text-bg-dark mb-3" style="max-width: 18rem; margin-top: 50px; margin-bottom: 300px">
-  <div class="card-header header-publicacion">
-    <div id="foto-y-username">
-    <img class="photo-profile-users" src="{{this.userPhoto}}" width="25px"/>
-    <h5>{{this.username}}</h5>
+  {{#each publicaciones}}
+  <div class="card text-bg-dark mb-3" style="max-width: 18rem; margin-top: 50px; margin-bottom: 300px">
+    <div class="card-header header-publicacion">
+      <div id="foto-y-username">
+        <img class="photo-profile-users" src="{{this.userPhoto}}" width="25px" />
+        <h5>{{this.username}}</h5>
+      </div>
+      <h5>{{this.hora}}</h5>
     </div>
-    <h5>{{this.hora}}</h5>
-  </div>
-  <div class="card-body">
-    <img src="{{this.photo}}" class="card-img-top img-users" alt="foto-de-{{this.username}}" width="300px" alt="cover" />
-    <h5 class="card-text text-center title-users">{{this.comment}}</h5>
-    {{#each this.comentarios}}
-    <p class="card-text coments">{{this}}</p>
-    {{/each}}
-  </div>
-  <form action="/logged/comentario/{{this._id}}" method="post">
-    <div class="mb-3 text-center title-users">
-      <label for="comentario" class="form-label"><label>
-      <input type="text" name="comentario" placeholder="Añade un comentario..." class="form-control">
-      <br>
-      <button class="btn btn-primary">Enviar</button>
+    <div class="card-body">
+      <img src="{{this.photo}}" class="card-img-top img-users" alt="foto-de-{{this.username}}" width="300px"
+        alt="cover" />
+      <h5 class="card-text text-center title-users">{{this.comment}}</h5>
+      {{#each this.comentarios}}
+      <p class="card-text coments">{{this}}</p>
+      {{/each}}
     </div>
-  </form>
-</div>
-{{/each}}
+    <form action="/logged/comentario/{{this._id}}" method="post">
+      <div class="mb-3 text-center title-users">
+        <label for="comentario" class="form-label"><label>
+            <input type="text" name="comentario" placeholder="Añade un comentario..." class="form-control">
+            <br>
+            <button class="btn btn-primary">Enviar</button>
+      </div>
+    </form>
+  </div>
+  {{/each}}
 </div>
 
 
