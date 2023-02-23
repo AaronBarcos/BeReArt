@@ -1,24 +1,41 @@
-<div>
-<form action="/logged/profileAdmin/create" method="post" enctype="multipart/form-data" id="form-cuadro">
-    
-    <label for="title">Título:</label>
-    <input type="text" name="title">
-    <br>
-    <label for="author">Autor:</label>
-    <input type="text" name="author">
-    <br>
-    <label for="year">Año:</label>
-    <input type="text" name="year">
-    <br>
-    <label for="description">Descripción:</label>
-    <input type="text" name="description">
-    <br>
-    <label for="image">Cuadro del día:</label>
-    <input type="file" name="image">
-    <br>
-    <button id="button-post">Publicar "Cuadro del día"</button>
+<div id="form-cuadrodeldia">
+    <form class="form-horizontal" action="/logged/profileAdmin/create" method="post" enctype="multipart/form-data"
+        id="form-cuadro">
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="text">Título:</label>
+            <div class="col-sm-10">
+                <input type="text" name="title" class="form-control" id="text" placeholder="Añadir título...">
+            </div>
+            <br>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="autor">Autor:</label>
+            <div class="col-sm-10">
+                <input type="text" name="author" class="form-control" id="autor" placeholder="Añadir autor...">
+            </div>
+            <br>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="año">Año:</label>
+                <div class="col-sm-10">
+                    <input type="text" name="year" class="form-control" id="año" placeholder="Añadir año...">
+                </div>
+                <br>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="descripcion">Descripción:</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="description" class="form-control" id="descripcion"
+                            placeholder="Añadir descripción...">
+                    </div>
+                    <br>
+                    <label for="image">Cuadro del día:</label>
+                    <input type="file" name="image">
+
+                </div>
+                <br>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-success">Añadir "Cuadro del día"</button>
+                    </div>
+                </div>
     </form>
 </div>
-
-    
-    

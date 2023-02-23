@@ -12,82 +12,98 @@
   }
 </style>
 
-<h2>Cuadro del día</h2>
 
-<div class="card text-bg-dark border-light mb-3" style="max-width: 18rem;">
+<div style="margin-top: 50px;">
 
-  <img src="{{cuadroDelDia.image}}" class="card-img-top" alt="cuadro-del-dia" alt="cover" width="400px" />
-  <div class="card-body">
+<h2 class="border border-white text-center rounded">Cuadro del día</h2>
 
-    <h5 class="card-title">Título:
-      "{{cuadroDelDia.title}}"
-    </h5>
-    <p class="card-text">Autor:{{cuadroDelDia.author}}
-    </p>
-    <p class="card-text">Año: {{cuadroDelDia.year}}
-    </p>
-    <p class="card-text">Descripción:
-    <p>{{cuadroDelDia.description}}</p>
-    </p>
+  <div class="card text-bg-dark border-light mb-3" style="max-width: 18rem;">
+
+    <img src="{{cuadroDelDia.image}}" class="card-img-top" alt="cuadro-del-dia" alt="cover" width="400px" />
+    <div class="card-body">
+
+      <h5 class="card-title">Título:
+        "{{cuadroDelDia.title}}"
+      </h5>
+      <p class="card-text">Autor: {{cuadroDelDia.author}}
+      </p>
+      <p class="card-text">Año: {{cuadroDelDia.year}}
+      </p>
+      <p class="card-text">Descripción:
+      <p>{{cuadroDelDia.description}}</p>
+      </p>
+
+    </div>
 
   </div>
 
 </div>
 
-<h4>¡Ahora sube tu foto imitando este cuadro!</h4>
+<hr class="border border-white border-2 opacity-50" width="100%">
 
 {{#if hayPublicaciones}}
-<button id="button-create">Crear publicación</button>
+<h2>¡Ahora sube una foto imitando este cuadro!</h2>
+<button id="button-create" class="btn btn-success">Subir foto</button>
 {{else}}
-<div>
+
+
+<div id="tu-publicacion">
   <div class="card text-bg-dark mb-3" style="max-width: 18rem;">
-  <div class="card-header"> <p>
-  Publicado por: {{tuPublicacion.username}}
-  </p>
-  <img src="{{foundUser.profilePhoto}}" alt="foto-user" width="25px"/>
+  <div class="card-header"> 
+  <h5 class="text-center">
+    <img class="photo-profile-user" src="{{foundUser.profilePhoto}}" width="25px"/>
+    Hoy {{tuPublicacion.hora}}
+  </h5>
   </div>
   <div class="card-body">
     <img src="{{tuPublicacion.photo}}" class="card-img-top" alt="foto-de-{{tuPublicacion.username}}" width="300px" alt="cover" />
-    <p class="card-text">Comentario:{{tuPublicacion.comment}}</p>
-    <p class="card-text">Hora: {{tuPublicacion.hora}}</p>
+    <h5 class="card-text text-center title-users">{{tuPublicacion.comment}}</h5>
     {{#each tuPublicacion.comentarios}}
-    <p class="card-text">{{this}}</p>
+    <p class="card-text coments">{{this}}</p>
     {{/each}}
   </div>
   <form action="/logged/comentario/{{tuPublicacion._id}}" method="post">
-    <label for="comentario"><label>
-        <input type="text" name="comentario" placeholder="Añade un comentario...">
-        <br>
-        <button>Enviar</button>
+    <div class="mb-3 text-center">
+      <label for="comentario" class="form-label"><label>
+          <input type="text" name="comentario" placeholder="Añade un comentario..." class="form-control">
+          <br>
+          <button class="btn btn-primary">Enviar</button>
+    </div>
   </form>
 </div>
-  <button id="button-edit">Editar tu publicación</button>
+<div class="editar-borrar">
+  <button id="button-edit" class="btn btn-dark">Editar tu publicación</button>
   <form action="/logged/cuadroDelDiaDelete/{{foundUserId._id}}" method="post" id="button-delete">
-    <button>Borrar publicación</button>
+    <button class="btn btn-danger">Borrar publicación</button>
   </form>
+</div>
 </div>
 {{/if}}
 
 
 <form id="form-post" action="/logged/cuadroDelDia" method="post" enctype="multipart/form-data">
-  <label for="photo">Tú foto:</label>
-  <input type="file" name="photo" />
+<div class="mb-3 title-users">
+  <label for="photo" class="form-label">Tú foto:</label>
+  <input type="file" name="photo" class="form-control"/>
   <br />
-  <label for="comment">Comentario:</label>
-  <input type="text" name="comment" />
+  <label for="comment" class="form-label">Comentario:</label>
+  <input type="text" name="comment" class="form-control"/>
   <br />
   <p>¡Recuerda que solo puedes subir una publicación al día!</p>
-  <button id="button-post">Publicar</button>
+  <button id="button-post" class="text-center btn btn-success">Publicar</button>
+</div>
 </form>
 
 <form id="edit-form" action="/logged/cuadroDelDiaEdit/{{foundUser._id}}" method="post" enctype="multipart/form-data">
-  <label for="photo">Tú foto:</label>
-  <input type="file" name="photo" />
+  <div class="mb-3">
+  <label for="photo" class="form-label">Tú foto:</label>
+  <input type="file" name="photo" class="form-control"/>
   <br />
-  <label for="comment">Comentario:</label>
-  <input type="text" name="comment" value="{{publicacion.[0].comment}}" />
+  <label for="comment" class="form-label">Comentario:</label>
+  <input type="text" name="comment" class="form-control"/>
   <br />
-  <button id="button-post">Guardar cambios</button>
+  <button id="button-post" class="text-center btn btn-success">Guardar</button>
+</div>
 </form>
 
 
@@ -96,30 +112,40 @@
 <p>{{this.errorMessage}}</p>
 {{/if}}
 
+<hr class="border border-white border-2 opacity-50" width="50%">
+
+<div id="publicaciones">
 
 {{#each publicaciones}}
-<div class="card text-bg-dark mb-3" style="max-width: 18rem;">
-  <div class="card-header"> <p>
-  Publicado por: {{this.username}}
-  </p>
-  <img src="{{foundUser.profilePhoto}}" alt="foto-user" width="25px"/>
+<div class="card text-bg-dark mb-3" style="max-width: 18rem; margin-top: 50px; margin-bottom: 300px">
+  <div class="card-header header-publicacion">
+    <div id="foto-y-username">
+    <img class="photo-profile-users" src="{{this.userPhoto}}" alt="foto-user" width="25px"/>
+    <h5>{{this.username}}</h5>
+    </div>
+    <h5>{{this.hora}}</h5>
   </div>
   <div class="card-body">
-    <img src="{{this.photo}}" class="card-img-top" alt="foto-de-{{this.username}}" width="300px" alt="cover" />
-    <p class="card-text">Comentario:{{this.comment}}</p>
-    <p class="card-text">Hora: {{this.hora}}</p>
+    <img src="{{this.photo}}" class="card-img-top img-users" alt="foto-de-{{this.username}}" width="300px" alt="cover" />
+    <h5 class="card-text text-center title-users">{{this.comment}}</h5>
     {{#each this.comentarios}}
-    <p class="card-text">{{this}}</p>
+    <p class="card-text coments">{{this}}</p>
     {{/each}}
   </div>
   <form action="/logged/comentario/{{this._id}}" method="post">
-    <label for="comentario"><label>
-        <input type="text" name="comentario" placeholder="Añade un comentario...">
-        <br>
-        <button>Enviar</button>
+    <div class="mb-3 text-center title-users">
+      <label for="comentario" class="form-label"><label>
+      <input type="text" name="comentario" placeholder="Añade un comentario..." class="form-control">
+      <br>
+      <button class="btn btn-primary">Enviar</button>
+    </div>
   </form>
 </div>
 {{/each}}
+</div>
+
+
+
 
 <script>
   const buttonCreate = document.querySelector("#button-create")

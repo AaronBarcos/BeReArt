@@ -17,3 +17,126 @@ a {
 h1 {
   color: 15px;
 }
+
+#publicaciones {
+  margin-bottom: 100px;
+}
+
+#logo-home {
+  padding-left: 5px;
+}
+
+#texto-home {
+  padding-top: 0px;
+}
+
+#tu-publicacion {
+  margin-top: 50px;
+}
+
+.editar-borrar {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-bottom: 50px;
+  width: 75px;
+  gap: 25px;
+  margin-left: 110px;
+}
+
+.editar-borrar-profile {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+#home {
+  padding-top: 75px;
+}
+
+.header-publicacion {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.photo-profile-user {
+  border-radius: 50%;
+}
+#foto-y-username {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 10px;
+  align-items: center;
+}
+.photo-profile-users {
+  border-radius: 70%;
+}
+
+.img-users {
+  border-radius: 10px;
+}
+
+.title-users {
+  margin-top: 10px;
+}
+
+.coments {
+  margin: 20px;
+}
+.container-nav {
+  float: left;
+}
+
+#form-cuadrodeldia {
+  display: flex;
+  flex-direction: column;
+  padding-top: 20px;
+  justify-content: center;
+}
+
+#profileEdit {
+  display: flex;
+  flex-direction: column;
+  padding-top: 20px;
+  justify-content: center;
+}
+
+#profile-container {
+  display: flex;
+  flex-direction: column;
+  padding-top: 20px;
+  justify-content: center;
+  width: 400px;
+}
+
+#foto-nombre {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+#nombre-profile {
+  margin-left: 15px;
+}
+
+#info-user {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+#form-registro {
+  display: flex;
+  flex-direction: column;
+  padding-top: 20px;
+  justify-content: center;
+  width: 500px;
+}
+
+.anchor-registro {
+  text-decoration: none;
+}

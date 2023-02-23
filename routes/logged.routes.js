@@ -22,10 +22,18 @@ router.get("/cuadroDelDia", isLoggedIn, async (req, res, next) => {
     const foundUserId = await User.findById(req.session.activeUser._id);
     const fechasPublicaciones = await Publicacion.find().select("createdAt");
     const foundUser = await User.findById(req.session.activeUser._id);
+    //Para actualizar foto de perfil en la colección de publicaciones del día
+    await Publicacion.findOneAndUpdate({owner: foundUser._id}, {
+      userPhoto: foundUser.profilePhoto
+    })
     const publicacion = await Publicacion.find({ owner: foundUser.id })
     const publicacionByName = await Publicacion.find().select("username");
     const tuPublicacion = await Publicacion.findOne({username: foundUser.username})
+    const Users = await User.find()
+    const fotoPerfilUser = await Publicacion.findById( Users._id).populate("profilePhoto")
     let hayPublicaciones = true;
+
+    console.log(fotoPerfilUser)
 
     // Esto se puede meter en utils
     const tiempoTranscurrido = Date.now();
@@ -165,12 +173,18 @@ router.post("/cuadroDelDiaDelete/:id", isLoggedIn, async (req, res, next) => {
 // Ruta para ir al perfil del user
 router.get("/profile", isLoggedIn, async (req, res, next) => {
   try {
+    
     let isAdmin = false;
     if (req.session.activeUser.role === "admin") {
       isAdmin = true;
+    } else {
+      next;
     }
 
     const foundUser = await User.findById(req.session.activeUser._id);
+    console.log(foundUser)
+    console.log("hola")
+    
     const publicacionesDeUser = await PublicacionCopia.find({
       owner: foundUser._id,
     });
@@ -292,10 +306,9 @@ router.post("/cuadroDelDiaEdit/:id", isLoggedIn, uploader.single("photo"), async
 
 router.post("/profile/photo", isLoggedIn, uploaderFotoUser.single("profilePhoto"), async (req, res, next) => {
   try {
-    console.log(req.session.activeUser._id)
+    
     await User.findByIdAndUpdate(req.session.activeUser._id, {
-      profilePhoto: req.file.path
-    })
+      profilePhoto: req.file.path })
     res.redirect("/logged/profile");
   } catch (error) {
     next(error);

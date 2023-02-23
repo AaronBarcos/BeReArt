@@ -1,18 +1,56 @@
-<div>
-    <h1>LET'S CREATE</h1>
-    <form action="" method="post">
-        <h3>Formulario de acceso</h3>
-        <label for="username">Nombre de usuario:</label>
-        <input type="username" name="username" value="{{valueUsername}}">
-        <br>
-        <label for="password">Contraseña:</label>
-        <input type="password" name="password">
-        <br>
-        <button>Acceder</button>
-    </form>
-    {{#if this.errorMessage}}
-        <h4>{{this.errorMessage}}</h4>
-    {{/if}}
-    <h3>¿No tienes cuenta?</h3>
-    <a href="/auth/signup"><h4>Registrarse como usuario</h4></a>
+<div id="home" class="container">
+    <div class="row align-items-start">
+        <div id="texto-home" class="col align-self-start">
+            <img id="logo-home" class="row align-items-start" src="../images/bereart-logo-blanco.png" alt="logo-bereart"
+                width="400px">
+            <p class="fs-8 mb-3">Proyecto realizado por Aaron y Alberto</p>
+            <p class="fs-1 mb-4">Copia a los mejores.
+                <br>
+                Crea tu obra de arte.
+            </p>
+            <p class="fs-5">¿No tienes cuenta?</p>
+            <button class="btn btn-info">
+                <a class="anchor-registro" href="/auth/signup">
+                    ¡Regístrate ahora!
+                </a>
+            </button>
+        </div>
+
+        <div class="col" class="p-3 mb-2 bg-white text-black">
+
+
+            <div id="form-registro">
+                <form class="form-horizontal" action="" method="post">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="username">Username:</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="username" class="form-control" id="text">
+                        </div>
+                        <br>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="password">Contraseña:</label>
+                        <div class="col-sm-10">
+                            <input type="password" name="password" class="form-control" id="password">
+                        </div>
+                        <br>
+
+                        <br>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-success">Inicia sesión</button>
+                            </div>
+                        </div>
+                </form>
+                <br>
+                {{#if this.errorMessage}}
+                <div class="alert alert-danger" role="alert">
+                    {{this.errorMessage}}
+                </div>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+
 </div>

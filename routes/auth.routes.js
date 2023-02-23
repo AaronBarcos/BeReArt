@@ -20,7 +20,7 @@ router.post("/signup", async (req, res, next) => {
     req.body.ubication === ""
   ) {
     res.render("auth/signup-form.hbs", {
-      errorMessage: "Todos los campos deben estar llenos!",
+      errorMessage: "¡Todos los campos deben estar llenos!",
       valueUsername: req.body.username,
       valueEmail: req.body.email,
       valueUbication: req.body.ubication,
@@ -85,7 +85,7 @@ router.post("/login", async (req, res, next) => {
   // Todos los campos deben estar completos
   if (req.body.username === "" || req.body.password === "") {
     res.status(401).render("auth/login-form.hbs", {
-      errorMessage: "Todos los campos deben estar completos!",
+      errorMessage: "¡Todos los campos deben estar completos!",
       valueUsername: req.body.username,
     });
     return;

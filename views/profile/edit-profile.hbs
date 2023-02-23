@@ -1,23 +1,38 @@
-<h2>Editar datos del Usuario</h2>
+<div id="profileEdit">
+<p class="fs-2">Editar datos del Usuario</p>
 
-<h4>Perfil de: {{updateUser.username}}</h4>
-<div>
-  <form action="/logged/{{updateUser._id}}/edit" method="post">
-    <label for="username">Nombre de usuario</label>
-    <input type="text" name="username" value="{{updateUser.username}}" />
-    <br />
+<p class="fs-4">Perfil de: {{updateUser.username}}</p>
 
-    <label for="email">Email</label>
-    <input type="text" name="email" value="{{updateUser.email}}" />
-    <br />
 
-    <label for="ubication">Ubicación:</label>
-    <input type="text" name="ubication" value="{{updateUser.ubication}}" />
-    <br />
+<div id="form-editPerfil">
+  <form class="form-horizontal" action="/logged/{{updateUser._id}}/edit" method="post">
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="text">Usuario:</label>
+      <div class="col-sm-10">
+        <input type="text" name="username" class="form-control" id="text" value="{{updateUser.username}}">
+      </div>
+      <br>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="autor">Email:</label>
+      <div class="col-sm-10">
+        <input type="text" name="email" class="form-control" id="email" value="{{updateUser.email}}">
+      </div>
+      <br>
+      <div class="form-group">
+        <label class="control-label col-sm-2" for="año">Ubicación:</label>
+        <div class="col-sm-10">
+          <input type="text" name="ubication" class="form-control" id="ubicacion" value="{{updateUser.ubication}}">
+        </div>
+        <br>
 
-    
-
-    <button>Guardar cambios</button>
-
+        </div>
+        <br>
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-success">Guardar cambios</button>
+          </div>
+        </div>
   </form>
+</div>
 </div>

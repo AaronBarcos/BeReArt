@@ -16,6 +16,8 @@ const publicacionSchema = new Schema(
 
     username: String,
 
+    userPhoto: String,
+
     comment: {
       type: String,
     },

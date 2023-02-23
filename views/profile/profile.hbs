@@ -1,41 +1,87 @@
 <style>
-  .redondo { display: block; width: 100px; height: 100px; border-radius: 50%; background-color: white; }
-  #form-photo { display: none;}
+  .redondo {
+    display: block;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: white;
+  }
+
+  #form-photo {
+    display: none;
+  }
+
+  .columna {
+    float: left;
+    width: 33%;
+    padding-right: 5px;
+  }
+
+  .fila::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
 </style>
 
-{{#if isAdmin}}
-  <h2>Perfil de Administrador</h2>
-{{else}}
-  <h2>Perfil de Usuario</h2>
-{{/if}}
 
-<div>
 
-  <img src="{{foundUser.profilePhoto}}" alt="Crear imagen de perfil" class="redondo"/>
-  <button id="button-photo">Actualizar imagen de perfil</button>
+<div id="profile-container">
+
+  {{#if isAdmin}}
+  <p class="fs-2">Perfil de Administrador</p>
+  {{else}}
+  <p class="fs-2">Perfil de Usuario</p>
+  {{/if}}
+
+  <div id="foto-nombre">
+    <img src="{{foundUser.profilePhoto}}" alt="Crear imagen de perfil" class="redondo" />
+    <p class="fs-5" id="nombre-profile">{{foundUser.username}}</p>
+  </div>
+
+  <button id="button-photo" class="btn btn-secondary btn-sm" style="">Actualizar imagen de perfil</button>
 
   <form id="form-photo" action="/logged/profile/photo" method="post" enctype="multipart/form-data">
-    <label for="profilePhoto"></label>
-    <input type="file" name="profilePhoto" />
-    <button>Enviar</button>
+    <div class="mb-3">
+      <label for="profilePhoto" class="form-label"></label>
+      <input type="file" name="profilePhoto" class="form-control" />
+      <br>
+      <button class="btn btn-secondary">Actualizar foto</button>
+    </div>
   </form>
 
-  <h5>Nombre: {{foundUser.username}}</h5>
-  <h5>Email: {{foundUser.email}}</h5>
-  <h5>Ubicación: {{foundUser.ubication}}</h5>
-  <h5>Últimas fotos: </h5>
+  <div id="info-user">
+    <p class="fs-5">Email:
+    <p class="fs-7">{{foundUser.email}}</p>
+    </p>
+    <p class="fs-5">Ubicación:
+    <p class="fs-7">{{foundUser.ubication}}</p>
+    </p>
+    <p class="fs-5">Últimas fotos: </p>
+  </div>
 
-  {{#each publicacionesDeUser}}
-    <img src="{{this.photo}}" alt="foto-del-día" width="100px" />
-    <p>{{this.fechaHora}}</p>
-  {{/each}}
+  <div id="ultimas-fotos" class="fila">
+    {{#each publicacionesDeUser}}
+    <div class="columna">
+      <img src="{{this.photo}}" alt="foto-del-día" width="100px" />
+      <p>{{this.fechaHora}}</p>
+    </div>
+    {{/each}}
+  </div>
 
-  <a href="/logged/profile/edit"><button>Editar</button></a>
+  <div id="container-edicion">
 
-  <br />
-  <form action="/logged/deleteUser/{{foundUser._id}}" method="post">
-    <button>Eliminar usuario</button>
-  </form>
+    <div class="editar-borrar-profile">
+      <a href="/logged/profile/edit"><button class="btn btn-info">Editar perfil</button></a>
+      <br />
+      <form action="/logged/deleteUser/{{foundUser._id}}" method="post">
+        <button class="btn btn-danger">Eliminar usuario</button>
+      </form>
+    </div>
+  </div>
+
+
+
 </div>
 
 <script>
@@ -44,6 +90,7 @@
   const formPhoto = document.querySelector("#form-photo")
   const displayFormPhoto = () => {
     formPhoto.style.display = "block"
+    buttonPhoto.style.display = "none"
   }
 
   buttonPhoto.addEventListener("click", displayFormPhoto)
