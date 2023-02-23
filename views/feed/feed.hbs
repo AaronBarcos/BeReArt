@@ -51,7 +51,7 @@
     <p class="card-text">Comentario:{{tuPublicacion.comment}}</p>
     <p class="card-text">Hora: {{tuPublicacion.hora}}</p>
     {{#each tuPublicacion.comentarios}}
-    <p class="card-text">{{tuPublicacion}}</p>
+    <p class="card-text">{{this}}</p>
     {{/each}}
   </div>
   <form action="/logged/comentario/{{tuPublicacion._id}}" method="post">
