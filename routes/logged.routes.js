@@ -24,6 +24,7 @@ router.get("/cuadroDelDia", isLoggedIn, async (req, res, next) => {
     const foundUser = await User.findById(req.session.activeUser._id);
     const publicacion = await Publicacion.find({ owner: foundUser.id })
     const publicacionByName = await Publicacion.find().select("username");
+    const tuPublicacion = await Publicacion.findOne({username: foundUser.username})
     let hayPublicaciones = true;
 
     // Esto se puede meter en utils
@@ -31,7 +32,7 @@ router.get("/cuadroDelDia", isLoggedIn, async (req, res, next) => {
     const hoy = new Date(tiempoTranscurrido);
     const fechaDeHoy = hoy.toLocaleDateString();
     const horaActual = hoy.toLocaleTimeString();
-    // console.log(foundUserId);
+    console.log(tuPublicacion);
 
     if (
         publicacionByName.filter(
@@ -57,6 +58,7 @@ router.get("/cuadroDelDia", isLoggedIn, async (req, res, next) => {
       foundUserId: foundUserId,
       publicacion: publicacion,
       foundUser: foundUser,
+      tuPublicacion: tuPublicacion,
       hayPublicaciones,
     });
   } catch (error) {
@@ -306,7 +308,7 @@ router.post("/comentario/:idPublicacion", isLoggedIn, async (req, res, next) => 
   try {
     const {idPublicacion} = req.params
     const foundUser = await User.findById(req.session.activeUser._id);
-    const esaPublicacion = await Publicacion.findByIdAndUpdate(idPublicacion, 
+    await Publicacion.findByIdAndUpdate(idPublicacion, 
       {$push:
         {comentarios: `${foundUser.username}: ${req.body.comentario}`}
       }

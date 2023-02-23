@@ -40,15 +40,33 @@
 <button id="button-create">Crear publicación</button>
 {{else}}
 <div>
-  <img src="{{publicacion.[0].photo}}" alt="foto-subida-por-ti" width="100px">
+  <div class="card text-bg-dark mb-3" style="max-width: 18rem;">
+  <div class="card-header"> <p>
+  Publicado por: {{tuPublicacion.username}}
+  </p>
+  <img src="{{foundUser.profilePhoto}}" alt="foto-user" width="25px"/>
+  </div>
+  <div class="card-body">
+    <img src="{{tuPublicacion.photo}}" class="card-img-top" alt="foto-de-{{tuPublicacion.username}}" width="300px" alt="cover" />
+    <p class="card-text">Comentario:{{tuPublicacion.comment}}</p>
+    <p class="card-text">Hora: {{tuPublicacion.hora}}</p>
+    {{#each tuPublicacion.comentarios}}
+    <p class="card-text">{{tuPublicacion}}</p>
+    {{/each}}
+  </div>
+  <form action="/logged/comentario/{{tuPublicacion._id}}" method="post">
+    <label for="comentario"><label>
+        <input type="text" name="comentario" placeholder="Añade un comentario...">
+        <br>
+        <button>Enviar</button>
+  </form>
+</div>
   <button id="button-edit">Editar tu publicación</button>
   <form action="/logged/cuadroDelDiaDelete/{{foundUserId._id}}" method="post" id="button-delete">
     <button>Borrar publicación</button>
   </form>
 </div>
 {{/if}}
-
-
 
 
 <form id="form-post" action="/logged/cuadroDelDia" method="post" enctype="multipart/form-data">
