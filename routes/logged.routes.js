@@ -17,15 +17,15 @@ const uploaderFotoUser = require("../middlewares/cloudinary-fotouser.js")
 // Ruta para renderizar el feed
 router.get("/cuadroDelDia", isLoggedIn, async (req, res, next) => {
   try {
+    const foundUser = await User.findById(req.session.activeUser._id);
+    await Publicacion.findOneAndUpdate({owner: foundUser._id}, {
+      userPhoto: foundUser.profilePhoto
+    })
     const publicaciones = await Publicacion.find();
     const cuadroDelDia = await Cuadro.findOne().sort({ createdAt: -1 });
     const foundUserId = await User.findById(req.session.activeUser._id);
     const fechasPublicaciones = await Publicacion.find().select("createdAt");
-    const foundUser = await User.findById(req.session.activeUser._id);
     //Para actualizar foto de perfil en la colección de publicaciones del día
-    await Publicacion.findOneAndUpdate({owner: foundUser._id}, {
-      userPhoto: foundUser.profilePhoto
-    })
     const publicacion = await Publicacion.find({ owner: foundUser.id })
     const publicacionByName = await Publicacion.find().select("username");
     const tuPublicacion = await Publicacion.findOne({username: foundUser.username})
