@@ -18,6 +18,11 @@ h1 {
   color: 15px;
 }
 
+#no-hay-cuadro {
+  margin-top: 100px;
+  margin-bottom: 100px;
+}
+
 #publicaciones {
   margin-bottom: 100px;
 }

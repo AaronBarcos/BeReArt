@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema, model } = require("mongoose");
 
-// TODO: Please make sure you edit the User model to whatever makes sense in this case
 const publicacionSchema = new Schema(
   {
     photo: {
@@ -22,7 +21,6 @@ const publicacionSchema = new Schema(
 
     picture: {
       type: String,
-      // required: true
     },
 
     cuadroDia: {
@@ -32,7 +30,6 @@ const publicacionSchema = new Schema(
     fechaHora: String,
   },
   {
-    // this second object adds extra properties: `createdAt` and `updatedAt`
     timestamps: true,
   }
 );

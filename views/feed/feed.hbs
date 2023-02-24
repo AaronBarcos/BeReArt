@@ -12,7 +12,7 @@
   }
 </style>
 
-
+{{#if hayCuadro}}
 <div style="margin-top: 50px;">
 
   <h2 class="border border-white text-center rounded">Cuadro del día</h2>
@@ -38,6 +38,9 @@
   </div>
 
 </div>
+{{else}}
+<h1 id="no-hay-cuadro">{{errorMessageCuadro}}</h1>
+{{/if}}
 
 <hr class="border border-white border-2 opacity-50" width="100%">
 
@@ -104,8 +107,8 @@
     <input type="text" name="comment" class="form-control" />
     <br />
     <div class="alert alert-warning" role="alert">
-  ¡Sube una nueva foto con un comentario!
-</div>
+      ¡Sube una nueva foto con un comentario!
+    </div>
     <button id="button-post" class="text-center btn btn-success">Guardar</button>
   </div>
 </form>
@@ -167,8 +170,6 @@
   const desplegarEditPost = () => {
     buttonEdit.style.display = "none"
     editForm.style.display = "block"
-
-    console.log("hola")
   }
   const displayPost = () => {
     buttonCreate.style.display = "none"
